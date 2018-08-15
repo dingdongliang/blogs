@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <title>首页 - 航天金穗大数据技术团队</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+</head>
+<body class="holygrail pg-index">
+<div class="holygrail-body">
+    <div class="nav-bar">
+        <div class="nav-bar-inner">
+            <span class="nav-bar-site-title"><a href="">航天金穗大数据技术团队</a></span>
+            <button class="nav-bar-btn">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="nav-bar-tabs">
+            <nav><span class="nav-bar-tab current"><a href="/" class="current">最新文章</a></span><span
+                    class="nav-bar-tab"><a href="/sort">文章归档</a></span>
+            </nav>
+        </div>
+    </div>
+    <div class="main">
+        <div class="tag_header"><span>最新文章</span>
+            <form action="/google.com/search" method="get" target="_blank" class="search">
+                <div class="search_box">
+                    <input type="text" name="q" class="search_input"/>
+                    <input type="hidden" name="q" value="site:tech.htjs.net">
+                    <input type="hidden" name="gw_rd" value="cr"/>
+                    <input type="submit" id="search_submit">
+                    <label for="search_submit"></label></div>
+            </form>
+        </div>
+        <section class="post-list">
+            <div th:each="blogArticle:${blogArticleList}">
+                <article class="post post-with-tags">
+                    <header class="post-title">
+                        <a th:href="@{'/detail/'+${blogArticle.articleId}}"><label
+                                th:text=${blogArticle.articleTitle}></label></a>
+                    </header>
+                    <div class="post-meta"><span class="post-meta-author">丁冬亮</span><span class="post-meta-ctime">2018-08-13</span>
+                    </div>
+                    <p class="post-abstract" th:text="${blogArticle.articleSummary}">
+
+                    </p>
+                    <footer class="post-tags">
+                        <a href="tag/金融" class="tag"><span class="tag_name">金融</span></a>
+                    </footer>
+                </article>
+            </div>
+            <footer class="more"><span class="rectangle"><a href="/" class="btn">查看更多</a></span></footer>
+        </section>
+    </div>
+</div>
+<div class="qr_code_btn_container">
+    <a href="javascript:window.smoothScrollToTop()"><span class="top_btn"></span></a></div>
+<footer id="footer">
+    <div class="ft"><span class="copyright">&copy; 2018 航天金穗大数据技术团队</span><span
+            class="copyright">All rights reserved.</span>
+    </div>
+</footer>
+<script src="/js/index.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

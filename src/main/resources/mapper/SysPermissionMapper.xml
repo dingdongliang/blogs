@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysPermissionMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysPermission">
+        <id column="PMSN_ID" property="pmsnId" jdbcType="VARCHAR" />
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+        <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR" />
+        <result column="PRNT_ID" property="prntId" jdbcType="VARCHAR" />
+        <result column="PRNT_NAME" property="prntName" jdbcType="VARCHAR" />
+        <result column="PMSN_CODE" property="pmsnCode" jdbcType="VARCHAR" />
+        <result column="PMSN_NAME" property="pmsnName" jdbcType="VARCHAR" />
+        <result column="PMSN_TYPE" property="pmsnType" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="CHAR" />
+        <result column="PMSN_URL" property="pmsnUrl" jdbcType="VARCHAR" />
+        <result column="PMSN_DESC" property="pmsnDesc" jdbcType="VARCHAR" />
+        <result column="REQUIRED" property="required" jdbcType="CHAR" />
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP" />
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP" />
+        <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        PMSN_ID, MENU_NAME, MENU_CODE, PRNT_ID, PRNT_NAME, PMSN_CODE, PMSN_NAME, PMSN_TYPE,
+        STATUS, PMSN_URL, PMSN_DESC, REQUIRED, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from sys_permission
+        where PMSN_ID = #{pmsnId,jdbcType=VARCHAR} and STATUS = 'E'
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_permission WHERE STATUS = 'E'
+    </select>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update sys_permission set STATUS = 'I' WHERE PMSN_ID = #{pmsnId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysPermission">
+        INSERT INTO sys_permission (PMSN_ID, MENU_NAME, MENU_CODE, PRNT_ID, PRNT_NAME, PMSN_CODE, PMSN_NAME, PMSN_TYPE,
+        STATUS, PMSN_URL, PMSN_DESC, REQUIRED, CREATED, LASTMOD, CREATER, MODIFYER)
+        VALUES (#{pmsnId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, #{menuCode,jdbcType=VARCHAR},
+        #{prntId,jdbcType=VARCHAR}, #{prntName,jdbcType=VARCHAR}, #{pmsnCode,jdbcType=VARCHAR},
+        #{pmsnName,jdbcType=VARCHAR}, #{pmsnType,jdbcType=VARCHAR}, #{status,jdbcType=CHAR},
+        #{pmsnUrl,jdbcType=VARCHAR}, #{pmsnDesc,jdbcType=VARCHAR}, #{required,jdbcType=CHAR},
+        #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR},
+        #{modifyer,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysPermission">
+        insert into sys_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pmsnId != null">
+                PMSN_ID,
+            </if>
+            <if test="menuName != null">
+                MENU_NAME,
+            </if>
+            <if test="menuCode != null">
+                MENU_CODE,
+            </if>
+            <if test="prntId != null">
+                PRNT_ID,
+            </if>
+            <if test="prntName != null">
+                PRNT_NAME,
+            </if>
+            <if test="pmsnCode != null">
+                PMSN_CODE,
+            </if>
+            <if test="pmsnName != null">
+                PMSN_NAME,
+            </if>
+            <if test="pmsnType != null">
+                PMSN_TYPE,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="pmsnUrl != null">
+                PMSN_URL,
+            </if>
+            <if test="pmsnDesc != null">
+                PMSN_DESC,
+            </if>
+            <if test="required != null">
+                REQUIRED,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pmsnId != null">
+                #{pmsnId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuCode != null">
+                #{menuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="prntId != null">
+                #{prntId,jdbcType=VARCHAR},
+            </if>
+            <if test="prntName != null">
+                #{prntName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnCode != null">
+                #{pmsnCode,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnName != null">
+                #{pmsnName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnType != null">
+                #{pmsnType,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="pmsnUrl != null">
+                #{pmsnUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnDesc != null">
+                #{pmsnDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                #{required,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysPermission">
+        update sys_permission
+        <set>
+            <if test="menuName != null">
+                MENU_NAME = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuCode != null">
+                MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="prntId != null">
+                PRNT_ID = #{prntId,jdbcType=VARCHAR},
+            </if>
+            <if test="prntName != null">
+                PRNT_NAME = #{prntName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnCode != null">
+                PMSN_CODE = #{pmsnCode,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnName != null">
+                PMSN_NAME = #{pmsnName,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnType != null">
+                PMSN_TYPE = #{pmsnType,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="pmsnUrl != null">
+                PMSN_URL = #{pmsnUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnDesc != null">
+                PMSN_DESC = #{pmsnDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="required != null">
+                REQUIRED = #{required,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PMSN_ID = #{pmsnId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysPermission">
+        UPDATE sys_permission
+        SET MENU_NAME = #{menuName,jdbcType=VARCHAR},
+        MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+        PRNT_ID = #{prntId,jdbcType=VARCHAR},
+        PRNT_NAME = #{prntName,jdbcType=VARCHAR},
+        PMSN_CODE = #{pmsnCode,jdbcType=VARCHAR},
+        PMSN_NAME = #{pmsnName,jdbcType=VARCHAR},
+        PMSN_TYPE = #{pmsnType,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        PMSN_URL = #{pmsnUrl,jdbcType=VARCHAR},
+        PMSN_DESC = #{pmsnDesc,jdbcType=VARCHAR},
+        REQUIRED = #{required,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        WHERE PMSN_ID = #{pmsnId,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getUserPmsn" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_permission where STATUS = 'E' and pmsn_id in
+        (select pmsn_id from sys_role_pmsn where role_id in
+        (select role_id from sys_user_role where user_id = #{userId,jdbcType=VARCHAR}))
+    </select>
+</mapper>

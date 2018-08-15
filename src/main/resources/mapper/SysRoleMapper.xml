@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysRole">
+        <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+        <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ROLE_ID, ROLE_NAME, ROLE_DESC, STATUS, CREATED, LASTMOD, CREATER, MODIFYER, IS_DEFAULT
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR} and STATUS = 'E'
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role WHERE STATUS = 'E'
+    </select>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update  sys_role set STATUS ='I'
+        WHERE ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysRole">
+        INSERT INTO sys_role (ROLE_ID, ROLE_NAME, ROLE_DESC, STATUS, CREATED, LASTMOD, CREATER, MODIFYER, IS_DEFAULT)
+        VALUES (#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleDesc,jdbcType=VARCHAR},
+        #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP},
+        #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR}, #{isDefault,jdbcType=CHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysRole">
+        insert into sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="roleName != null">
+                ROLE_NAME,
+            </if>
+            <if test="roleDesc != null">
+                ROLE_DESC,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+            <if test="isDefault != null">
+                IS_DEFAULT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleDesc != null">
+                #{roleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="isDefault != null">
+                #{isDefault,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysRole">
+        update sys_role
+        <set>
+            <if test="roleName != null">
+                ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleDesc != null">
+                ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="isDefault != null">
+                IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+            </if>
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysRole">
+        UPDATE sys_role
+        SET ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+        ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR},
+        IS_DEFAULT = #{isDefault,jdbcType=CHAR}
+        WHERE ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysUserPmsnMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysUserPmsn">
+        <id column="UPM_ID" property="upmId" jdbcType="VARCHAR"/>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="PMSN_ID" property="pmsnId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    UPM_ID, USER_ID, PMSN_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user_pmsn
+        where UPM_ID = #{upmId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_user_pmsn
+    where UPM_ID = #{upmId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysUserPmsn">
+    insert into sys_user_pmsn (UPM_ID, USER_ID, PMSN_ID, 
+      STATUS, CREATED, LASTMOD, 
+      CREATER, MODIFYER)
+    values (#{upmId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{pmsnId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP}, 
+      #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysUserPmsn">
+        insert into sys_user_pmsn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="upmId != null">
+                UPM_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="pmsnId != null">
+                PMSN_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="upmId != null">
+                #{upmId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnId != null">
+                #{pmsnId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysUserPmsn">
+        update sys_user_pmsn
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnId != null">
+                PMSN_ID = #{pmsnId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where UPM_ID = #{upmId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysUserPmsn">
+    update sys_user_pmsn
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      PMSN_ID = #{pmsnId,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=CHAR},
+      CREATED = #{created,jdbcType=TIMESTAMP},
+      LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+      CREATER = #{creater,jdbcType=VARCHAR},
+      MODIFYER = #{modifyer,jdbcType=VARCHAR}
+    where UPM_ID = #{upmId,jdbcType=VARCHAR}
+  </update>
+</mapper>

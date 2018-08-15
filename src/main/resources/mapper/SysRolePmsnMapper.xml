@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysRolePmsnMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysRolePmsn">
+        <id column="RP_ID" property="rpId" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="PMSN_ID" property="pmsnId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        RP_ID, ROLE_ID, PMSN_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_pmsn
+        where RP_ID = #{rpId,jdbcType=VARCHAR} and STATUS = 'E'
+    </select>
+
+    <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_pmsn
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByDoubleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_pmsn
+        where PMSN_ID = #{pmsnId,jdbcType=VARCHAR} and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_pmsn WHERE STATUS = 'E'
+    </select>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update sys_role_pmsn set STATUS = 'I' where RP_ID = #{rpId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysRolePmsn">
+        insert into sys_role_pmsn (RP_ID, ROLE_ID, PMSN_ID,
+        STATUS, CREATED, LASTMOD,
+        CREATER, MODIFYER)
+        values (#{rpId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{pmsnId,jdbcType=VARCHAR},
+        #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP},
+        #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysRolePmsn">
+        insert into sys_role_pmsn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rpId != null">
+                RP_ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="pmsnId != null">
+                PMSN_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rpId != null">
+                #{rpId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnId != null">
+                #{pmsnId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysRolePmsn">
+        update sys_role_pmsn
+        <set>
+            <if test="roleId != null">
+                ROLE_ID = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmsnId != null">
+                PMSN_ID = #{pmsnId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where RP_ID = #{rpId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysRolePmsn">
+        update sys_role_pmsn
+        set ROLE_ID = #{roleId,jdbcType=VARCHAR},
+        PMSN_ID = #{pmsnId,jdbcType=VARCHAR},
+        STATUS = #{status,jdbcType=CHAR},
+        CREATED = #{created,jdbcType=TIMESTAMP},
+        LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+        CREATER = #{creater,jdbcType=VARCHAR},
+        MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        where RP_ID = #{rpId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="deleteByRoleId">
+        update sys_role_pmsn set  STATUS= 'I' where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="deleteByPmsnId">
+        update sys_role_pmsn set  STATUS= 'I' where PMSN_ID = #{pmsnId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertMany">
+        insert into sys_role_pmsn(RP_ID,ROLE_ID,PMSN_ID,CREATED,CREATER,MODIFYER,LASTMOD,STATUS) values
+        <foreach collection="pmsnIds" item="item" index="index" separator=",">
+            ( '${@net.htjs.blog.util.StringUtil@getUUID()}', #{roleId,jdbcType=VARCHAR},
+            #{item,jdbcType=VARCHAR}, now(), #{userId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, now(), 'E' )
+        </foreach>
+    </insert>
+</mapper>

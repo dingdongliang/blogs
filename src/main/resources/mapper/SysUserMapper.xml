@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysUserMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysUser">
+        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="user_pwd" property="userPwd" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    user_id, user_name, register_time, account, user_pwd, phone
+  </sql>
+
+    <select id="userCertified" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user where account =#{account,jdbcType=VARCHAR} and STATUS = 'E'
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user WHERE STATUS = 'E'
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysUser">
+    insert into sys_user (user_id, user_name, register_time, 
+      account, user_pwd, phone)
+    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, 
+      #{account,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysUser">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="userPwd != null">
+                user_pwd,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysUser">
+        update sys_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                user_pwd = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysUser">
+    update sys_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      account = #{account,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

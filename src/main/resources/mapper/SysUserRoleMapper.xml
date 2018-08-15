@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.SysUserRoleMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysUserRole">
+        <id column="UR_ID" property="urId" jdbcType="VARCHAR" />
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="CHAR" />
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP" />
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP" />
+        <result column="CREATER" property="creater" jdbcType="VARCHAR" />
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        UR_ID, ROLE_ID, USER_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role
+        where UR_ID = #{urId,jdbcType=VARCHAR} and STATUS = 'E'
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role WHERE STATUS = 'E'
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByDoubleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role
+        where USER_ID = #{userId,jdbcType=VARCHAR} and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update sys_user_role  set STATUS = 'I' WHERE UR_ID = #{urId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="net.htjs.blog.entity.SysUserRole">
+        INSERT INTO sys_user_role (UR_ID, ROLE_ID, USER_ID, STATUS, CREATED, LASTMOD, CREATER, MODIFYER)
+        VALUES (#{urId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+                #{status,jdbcType=CHAR}, #{created,jdbcType=TIMESTAMP}, #{lastmod,jdbcType=TIMESTAMP},
+                #{creater,jdbcType=VARCHAR}, #{modifyer,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.SysUserRole">
+        insert into sys_user_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="urId != null">
+                UR_ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="status != null">
+                STATUS,
+            </if>
+            <if test="created != null">
+                CREATED,
+            </if>
+            <if test="lastmod != null">
+                LASTMOD,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modifyer != null">
+                MODIFYER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="urId != null">
+                #{urId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.SysUserRole">
+        update sys_user_role
+        <set>
+            <if test="roleId != null">
+                ROLE_ID = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                STATUS = #{status,jdbcType=CHAR},
+            </if>
+            <if test="created != null">
+                CREATED = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastmod != null">
+                LASTMOD = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creater != null">
+                CREATER = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyer != null">
+                MODIFYER = #{modifyer,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where UR_ID = #{urId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.SysUserRole">
+        UPDATE sys_user_role
+        SET ROLE_ID  = #{roleId,jdbcType=VARCHAR},
+            USER_ID  = #{userId,jdbcType=VARCHAR},
+            STATUS   = #{status,jdbcType=CHAR},
+            CREATED  = #{created,jdbcType=TIMESTAMP},
+            LASTMOD  = #{lastmod,jdbcType=TIMESTAMP},
+            CREATER  = #{creater,jdbcType=VARCHAR},
+            MODIFYER = #{modifyer,jdbcType=VARCHAR}
+        WHERE UR_ID = #{urId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertMany">
+        insert into sys_user_role(UR_ID, USER_ID, ROLE_ID, CREATED, CREATER, MODIFYER, LASTMOD, STATUS) values
+        <foreach collection="roleIds" item="item" index="index" separator=",">
+            ( '${@net.htjs.blog.util.StringUtil@getUUID()}', #{userId,jdbcType=VARCHAR},
+            #{item,jdbcType=VARCHAR}, now(), #{userId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, now(), 'E' )
+        </foreach>
+
+    </insert>
+</mapper>

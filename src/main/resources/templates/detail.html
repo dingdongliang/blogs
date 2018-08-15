@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head><title th:text="${blogArticle.articleTitle}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/css/editormd.preview.min.css"/>
+    <link rel="stylesheet" href="/css/editormd.mincss"/>
+
+</head>
+<body class="holygrail pg-post">
+<div class="holygrail-body">
+    <div class="nav-bar">
+        <div class="nav-bar-inner">
+            <span class="nav-bar-site-title"><a href="">航天金穗大数据技术团队</a></span>
+            <button class="nav-bar-btn">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="nav-bar-tabs">
+            <nav><span class="nav-bar-tab current"><a href="/" class="current">最新文章</a></span><span
+                    class="nav-bar-tab"><a href="/sort">文章归档</a></span>
+            </nav>
+        </div>
+    </div>
+    <div id="post_detail" class="content">
+        <div class="tag_header"><span>文章详情</span>
+            <form action="/google.com/search" method="get" target="_blank" class="search">
+                <div class="search_box"><input type="text" name="q" class="search_input"><input type="hidden" name="q"
+                                                                                                value="site:tech.htjs.net"><input
+                        type="hidden" name="gw_rd" value="cr"><input type="submit" id="search_submit"><label
+                        for="search_submit"></label></div>
+            </form>
+        </div>
+        <article class="detail_post">
+            <header class="article__title">
+                <h1 class="title" th:text="${blogArticle.articleTitle}">
+                </h1>
+                <p class="info"><span class="nick" th:text="${blogArticle.creater}"></span><span
+                        class="Separate"> ·</span><span class="date" th:text="${blogArticle.created}"></span>
+                </p></header>
+            <div class="content article__content" id="content">
+                <textarea name="editormd-markdown-doc" th:text="${blogArticle.articleInfo}"></textarea>
+
+            </div>
+            <footer class="article__footer">
+                <div class="qr_code_btn_container">
+                    <a href="javascript:window.smoothScrollToTop()"><span class="top_btn"></span></a></div>
+            </footer>
+        </article>
+    </div>
+</div>
+<footer id="footer">
+    <div class="ft"><span class="copyright">&copy; 2018 航天金穗大数据技术团队</span><span
+            class="copyright">All rights reserved.</span>
+    </div>
+</footer>
+<script src="/js/jquery.min.js"></script>
+<script src="/lib/marked.min.js"></script>
+<script src="/lib/prettify.min.js"></script>
+<script src="/lib/raphael.min.js"></script>
+<script src="/lib/underscore.min.js"></script>
+<script src="/lib/sequence-diagram.min.js"></script>
+<script src="/lib/flowchart.min.js"></script>
+<script src="/lib/jquery.flowchart.min.js"></script>
+<script src="/js/editormd.min.js"></script>
+
+<script type="text/javascript">
+    editormd.markdownToHTML("content", {
+        htmlDecode: "style,script,iframe",
+        emoji: true,
+        taskList: true,
+        tex: true,
+        flowChart: true,
+        sequenceDiagram: true,
+    });
+</script>
+</body>
+</html>

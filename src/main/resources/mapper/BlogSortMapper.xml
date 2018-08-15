@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.BlogSortMapper" >
+  <resultMap id="BaseResultMap" type="net.htjs.blog.entity.BlogSort" >
+    <id column="sort_id" property="sortId" jdbcType="VARCHAR" />
+    <result column="sort_name" property="sortName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sort_id, sort_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from blog_sort
+    where sort_id = #{sortId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_sort
+    where sort_id = #{sortId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="net.htjs.blog.entity.BlogSort" >
+    insert into blog_sort (sort_id, sort_name)
+    values (#{sortId,jdbcType=VARCHAR}, #{sortName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.htjs.blog.entity.BlogSort" >
+    insert into blog_sort
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sortId != null" >
+        sort_id,
+      </if>
+      <if test="sortName != null" >
+        sort_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sortId != null" >
+        #{sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="sortName != null" >
+        #{sortName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.BlogSort" >
+    update blog_sort
+    <set >
+      <if test="sortName != null" >
+        sort_name = #{sortName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sort_id = #{sortId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.BlogSort" >
+    update blog_sort
+    set sort_name = #{sortName,jdbcType=VARCHAR}
+    where sort_id = #{sortId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.htjs.blog.dao.BlogArticleMapper">
+    <resultMap id="BaseResultMap" type="net.htjs.blog.entity.BlogArticle">
+        <id column="article_id" property="articleId" jdbcType="VARCHAR"/>
+        <result column="article_title" property="articleTitle" jdbcType="VARCHAR"/>
+        <result column="creater" property="creater" jdbcType="VARCHAR"/>
+        <result column="sort_id" property="sortId" jdbcType="VARCHAR"/>
+        <result column="article_views" property="articleViews" jdbcType="INTEGER"/>
+        <result column="created" property="created" jdbcType="TIMESTAMP"/>
+        <result column="modifyer" property="modifyer" jdbcType="VARCHAR"/>
+        <result column="lastmod" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="article_summary" property="articleSummary" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="net.htjs.blog.entity.BlogArticle" extends="BaseResultMap">
+        <result column="article_info" property="articleInfo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+   article_id, article_title, creater, sort_id, article_views, created, modifyer, lastmod,
+    status, article_summary
+  </sql>
+    <sql id="Blob_Column_List">
+    article_info
+  </sql>
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from blog_article WHERE STATUS = 'E' order by created desc
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from blog_article
+        where article_id = #{articleId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from blog_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="net.htjs.blog.entity.BlogArticle">
+    insert into blog_article (article_id, article_title, creater, 
+      sort_id, article_views, created, 
+      modifyer, lastmod, status, 
+      article_summary, article_info)
+    values (#{articleId,jdbcType=VARCHAR}, #{articleTitle,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR},
+      #{sortId,jdbcType=VARCHAR}, #{articleViews,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP},
+      #{modifyer,jdbcType=VARCHAR}, #{lastmod,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR},
+      #{articleSummary,jdbcType=VARCHAR}, #{articleInfo,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="net.htjs.blog.entity.BlogArticle">
+        insert into blog_article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                article_id,
+            </if>
+            <if test="articleTitle != null">
+                article_title,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="sortId != null">
+                sort_id,
+            </if>
+            <if test="articleViews != null">
+                article_views,
+            </if>
+            <if test="created != null">
+                created,
+            </if>
+            <if test="modifyer != null">
+                modifyer,
+            </if>
+            <if test="lastmod != null">
+                lastmod,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="articleSummary != null">
+                article_summary,
+            </if>
+            <if test="articleInfo != null">
+                article_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                #{articleId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleTitle != null">
+                #{articleTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="sortId != null">
+                #{sortId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleViews != null">
+                #{articleViews,jdbcType=INTEGER},
+            </if>
+            <if test="created != null">
+                #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyer != null">
+                #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="lastmod != null">
+                #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="articleSummary != null">
+                #{articleSummary,jdbcType=VARCHAR},
+            </if>
+            <if test="articleInfo != null">
+                #{articleInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="net.htjs.blog.entity.BlogArticle">
+        update blog_article
+        <set>
+            <if test="articleTitle != null">
+                article_title = #{articleTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="creater != null">
+                creater = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="sortId != null">
+                sort_id = #{sortId,jdbcType=VARCHAR},
+            </if>
+            <if test="articleViews != null">
+                article_views = #{articleViews,jdbcType=INTEGER},
+            </if>
+            <if test="created != null">
+                created = #{created,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyer != null">
+                modifyer = #{modifyer,jdbcType=VARCHAR},
+            </if>
+            <if test="lastmod != null">
+                lastmod = #{lastmod,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="articleSummary != null">
+                article_summary = #{articleSummary,jdbcType=VARCHAR},
+            </if>
+            <if test="articleInfo != null">
+                article_info = #{articleInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where article_id = #{articleId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="net.htjs.blog.entity.BlogArticle">
+    update blog_article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      sort_id = #{sortId,jdbcType=VARCHAR},
+      article_views = #{articleViews,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      modifyer = #{modifyer,jdbcType=VARCHAR},
+      lastmod = #{lastmod,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      article_summary = #{articleSummary,jdbcType=VARCHAR},
+      article_info = #{articleInfo,jdbcType=LONGVARCHAR}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="net.htjs.blog.entity.BlogArticle">
+    update blog_article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      sort_id = #{sortId,jdbcType=VARCHAR},
+      article_views = #{articleViews,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      modifyer = #{modifyer,jdbcType=VARCHAR},
+      lastmod = #{lastmod,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      article_summary = #{articleSummary,jdbcType=VARCHAR}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+</mapper>
