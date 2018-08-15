@@ -2,12 +2,13 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <title>首页 - 航天金穗大数据技术团队</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/>
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="/css/index.css"/>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body class="holygrail pg-index">
 <div class="holygrail-body">
@@ -40,25 +41,27 @@
         <section class="post-list">
             <div th:each="blogArticle:${blogArticleList}">
                 <article class="post post-with-tags">
-                    <header class="post-title">
-                        <a th:href="@{'/detail/'+${blogArticle.articleId}}"><label
-                                th:text=${blogArticle.articleTitle}></label></a>
+                    <header class="post-title"><a th:href="@{'/detail/'+${blogArticle.articleId}}"><label
+                            th:text=${blogArticle.articleTitle}></label></a>
                     </header>
-                    <div class="post-meta"><span class="post-meta-author">丁冬亮</span><span class="post-meta-ctime">2018-08-13</span>
+                    <div class="post-meta"><span class="post-meta-author" th:text=${blogArticle.creater}></span><span
+                            class="post-meta-ctime" th:text=${blogArticle.created}></span>
                     </div>
                     <p class="post-abstract" th:text="${blogArticle.articleSummary}">
-
+                        在扫码付业务火箭式发展的过程中，对整个系统的可用性提出了严格的要求，前端服务也面临了很大的挑战。
+                        我们在不断解决问题的过程中总结了一些经验，有些方案取得...
                     </p>
                     <footer class="post-tags">
-                        <a href="tag/金融" class="tag"><span class="tag_name">金融</span></a>
+                        次数可能有关间隙
                     </footer>
                 </article>
             </div>
-            <footer class="more"><span class="rectangle"><a href="/" class="btn">查看更多</a></span></footer>
+            <footer class="more"><span class="rectangle"><a href="?l=40" class="btn">查看更多</a></span></footer>
         </section>
     </div>
 </div>
 <div class="qr_code_btn_container">
+
     <a href="javascript:window.smoothScrollToTop()"><span class="top_btn"></span></a></div>
 <footer id="footer">
     <div class="ft"><span class="copyright">&copy; 2018 航天金穗大数据技术团队</span><span

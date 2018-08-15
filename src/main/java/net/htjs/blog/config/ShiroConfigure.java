@@ -128,6 +128,8 @@ public class ShiroConfigure {
         filterChainMap.put("/js/**", SystemConstant.ANON);
         filterChainMap.put("/fonts/**", SystemConstant.ANON);
         filterChainMap.put("/plugins/**", SystemConstant.ANON);
+        filterChainMap.put("/favicon.ico", SystemConstant.ANON);
+
 
         //数据源druid访问的控制，生产环境中注意修改
         filterChainMap.put("/druid/**", SystemConstant.ANON);
