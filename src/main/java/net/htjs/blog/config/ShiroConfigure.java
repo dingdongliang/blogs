@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * blog/net.htjs.blog.config
  *
- * @Description:
+ * @Description: 权限控制，主要配置shiroFilter里面的内容
  * @Author: dingdongliang
  * @Date: 2018/8/14 10:25
  */
@@ -97,10 +97,22 @@ public class ShiroConfigure {
         Map<String, String> filterChainMap = new LinkedHashMap<>();
 
         filterChainMap.put("/", "anon");
-        filterChainMap.put("/login", "anon");
+        filterChainMap.put("/manage/login", "anon");
         filterChainMap.put("/error", "anon");
 
         //TODO 初步测试时使用，正式应用需要去掉
+        filterChainMap.put("/manage/main", "anon");
+        filterChainMap.put("/manage/user", "anon");
+        filterChainMap.put("/manage/role", "anon");
+        filterChainMap.put("/manage/pmsn", "anon");
+        filterChainMap.put("/manage/userInfo", "anon");
+        filterChainMap.put("/manage/article", "anon");
+        filterChainMap.put("/manage/articleEdit", "anon");
+        filterChainMap.put("/manage/userEdit", "anon");
+        filterChainMap.put("/manage/roleEdit", "anon");
+        filterChainMap.put("/manage/pmsnEdit", "anon");
+        filterChainMap.put("/uploadfile", "anon");
+
         filterChainMap.put("/getCurrentPmsn", "anon");
         filterChainMap.put("/user/addUser", "anon");
         filterChainMap.put("/user/updateUser", "anon");
@@ -128,17 +140,17 @@ public class ShiroConfigure {
         filterChainMap.put("/js/**", SystemConstant.ANON);
         filterChainMap.put("/fonts/**", SystemConstant.ANON);
         filterChainMap.put("/plugins/**", SystemConstant.ANON);
+        filterChainMap.put("/upload/**", SystemConstant.ANON);
         filterChainMap.put("/favicon.ico", SystemConstant.ANON);
-
 
         //数据源druid访问的控制，生产环境中注意修改
         filterChainMap.put("/druid/**", SystemConstant.ANON);
 
         //前端页面访问不需要权限
-        filterChainMap.put("/sort/**",SystemConstant.ANON);
-        filterChainMap.put("/detail/**",SystemConstant.ANON);
-        filterChainMap.put("/edit",SystemConstant.ANON);
-        filterChainMap.put("/save",SystemConstant.ANON);
+        filterChainMap.put("/sort/**", SystemConstant.ANON);
+        filterChainMap.put("/detail/**", SystemConstant.ANON);
+        filterChainMap.put("/edit", SystemConstant.ANON);
+        filterChainMap.put("/save", SystemConstant.ANON);
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainMap.put("/logout", "logout");

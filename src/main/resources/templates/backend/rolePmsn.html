@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8"/>
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>航天金穗大数据组技术博客</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/paper-dashboard.css?v=2.0.0" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrapper">
+    <div th:replace="left::left"></div>
+    <div class="main-panel">
+        <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+            <div th:replace="header::header"></div>
+        </nav>
+        <div class="content">
+            配置角色权限页面
+        </div>
+        <div th:replace="footer::footer"></div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/perfect-scrollbar.jquery.min.js"></script>
+<script src="/js/chartjs.min.js"></script>
+<script src="/js/bootstrap-notify.js"></script>
+<script src="/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+</body>
+</html>

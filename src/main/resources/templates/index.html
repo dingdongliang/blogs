@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>首页 - 航天金穗大数据技术团队</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/front.css"/>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
@@ -48,11 +48,10 @@
                             class="post-meta-ctime" th:text=${blogArticle.created}></span>
                     </div>
                     <p class="post-abstract" th:text="${blogArticle.articleSummary}">
-                        在扫码付业务火箭式发展的过程中，对整个系统的可用性提出了严格的要求，前端服务也面临了很大的挑战。
-                        我们在不断解决问题的过程中总结了一些经验，有些方案取得...
+
                     </p>
                     <footer class="post-tags">
-                        次数可能有关间隙
+                        <a href="tag/前后端分离" class="tag"><span class="tag_name">前后端分离</span></a>
                     </footer>
                 </article>
             </div>
@@ -68,6 +67,6 @@
             class="copyright">All rights reserved.</span>
     </div>
 </footer>
-<script src="/js/index.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/front.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

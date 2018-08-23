@@ -3,9 +3,11 @@ package net.htjs.blog.controller;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.entity.BlogArticle;
+import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.BlogArticleService;
+import net.htjs.blog.service.SysUserService;
 import net.htjs.blog.util.StringUtil;
-import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +17,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * blog/net.htjs.blog.controller
@@ -31,34 +38,59 @@ import java.util.List;
 public class ArticleController {
     @Resource
     private BlogArticleService blogArticleService;
+    @Resource
+    private SysUserService sysUserService;
 
+    @Value("${img.path}")
+    private String folder;
+
+    /**
+     * 前台首页
+     *
+     * @param model
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/22 11:54
+     */
     @GetMapping("/")
     public String index(Model model) {
         List<BlogArticle> blogArticleList = blogArticleService.selectAll();
+        for (BlogArticle blogArticle : blogArticleList) {
+            blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
+        }
         model.addAttribute("blogArticleList", blogArticleList);
         return "index";
     }
 
-    @GetMapping("/sort")
-    public String sort() {
-        return "sort";
-    }
 
+    /**
+     * 前台展示文章详细信息界面
+     *
+     * @param articleId
+     * @param model
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/22 11:53
+     */
     @GetMapping("/detail/{articleId}")
     public String detail(@PathVariable String articleId, Model model) {
         BlogArticle blogArticle = blogArticleService.selectByPrimaryKey(articleId);
+        blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
         model.addAttribute("blogArticle", blogArticle);
-        return "detail";
+        return "front/detail";
     }
 
-    @GetMapping("/edit")
-    public String edit() {
-        return "edit";
-    }
-
+    /**
+     * 保存文章界面
+     *
+     * @param blogArticle
+     * @return net.htjs.blog.exception.ResponseData
+     * @author dingdongliang
+     * @date 2018/8/22 11:54
+     */
     @PostMapping("/save")
     @ResponseBody
-    public String save(@RequestBody BlogArticle blogArticle) {
+    public ResponseData save(@RequestBody(required = false) BlogArticle blogArticle) {
         log.info(blogArticle.getArticleInfo());
 
         blogArticle.setArticleId(StringUtil.getUUID());
@@ -67,39 +99,43 @@ public class ArticleController {
         blogArticle.setArticleViews(1);
 
         blogArticleService.insert(blogArticle);
-        return "OK";
+        return ResponseData.success();
     }
 
+    /**
+     * 可以改造成JSON格式返回值
+     *
+     * @param request
+     * @param response
+     * @param file
+     */
     @PostMapping("/uploadfile")
-    public void uploadfile(HttpServletRequest request, HttpServletResponse response,
-                           @RequestParam(value = "editormd-image-file", required = false) MultipartFile attach) {
+    @ResponseBody
+    public Map<String, Object> uploadfile(HttpServletRequest request, HttpServletResponse response,
+                                          @RequestParam(value = "editormd-image-file", required = false) MultipartFile file) {
+        Map<String, Object> resultMap = new HashMap<>(3);
         try {
-            request.setCharacterEncoding("utf-8");
-            response.setHeader("Content-Type", "text/html");
-            String rootPath = request.getSession().getServletContext().getRealPath("/upload/");
 
-            /**
-             * 文件路径不存在则需要创建文件路径
-             */
-            File filePath = new File(rootPath);
-            if (!filePath.exists()) {
-                filePath.mkdirs();
-            }
 
-            //最终文件名
-            File realFile = new File(rootPath + File.separator + attach.getOriginalFilename());
-            FileUtils.copyInputStreamToFile(attach.getInputStream(), realFile);
+            String fileName = file.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            String newFileName = System.currentTimeMillis() + "." + suffix;
 
-            //下面response返回的json格式是editor.md所限制的，规范输出就OK
-            response.getWriter().write("{\"success\": 1, \"message\":\"上传成功\",\"url\":\"/resources/upload/"
-                    + attach.getOriginalFilename() + "\"}");
+            File localFile = new File(folder, newFileName);
+            file.transferTo(localFile);
+
+            String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/"))
+                    + "/upload/" + newFileName;
+
+            resultMap.put("success", 1);
+            resultMap.put("message", "上传成功！");
+            resultMap.put("url", url);
         } catch (Exception e) {
-            try {
-                response.getWriter().write("{\"success\":0}");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            log.error(e.getMessage());
+            resultMap.put("success", 0);
+            resultMap.put("message", "上传失败！");
+            resultMap.put("url", "");
         }
+        return resultMap;
     }
-
 }

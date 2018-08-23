@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head><title th:text="${blogArticle.articleTitle}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/>
     <meta name="format-detection" content="telephone=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/front.css"/>
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/css/editormd.preview.min.css"/>
-    <link rel="stylesheet" href="/css/editormd.mincss"/>
-
+    <link rel="stylesheet" href="/css/editormd.preview.css"/>
+    <link rel="stylesheet" href="/css/editormd.css"/>
 </head>
 <body class="holygrail pg-post">
 <div class="holygrail-body">
@@ -68,16 +68,16 @@
 <script src="/lib/sequence-diagram.min.js"></script>
 <script src="/lib/flowchart.min.js"></script>
 <script src="/lib/jquery.flowchart.min.js"></script>
-<script src="/js/editormd.min.js"></script>
+<script src="/js/editormd.js"></script>
 
 <script type="text/javascript">
     editormd.markdownToHTML("content", {
         htmlDecode: "style,script,iframe",
-        emoji: true,
         taskList: true,
         tex: true,
         flowChart: true,
         sequenceDiagram: true,
+        fontSize: "16px"
     });
 </script>
 </body>
