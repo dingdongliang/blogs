@@ -38,58 +38,41 @@
                                             <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="datatable"
-                                                    rowspan="1" colspan="1" style="width: 215px;" aria-sort="ascending"
-                                                    aria-label="Name: activate to sort column descending">Name
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1" style="width: 327px;"
-                                                    aria-label="Position: activate to sort column ascending">Position
+                                                    rowspan="1" colspan="1" style="width: 542px;" aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending">标题
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1" style="width: 155px;"
-                                                    aria-label="Office: activate to sort column ascending">Office
+                                                    aria-label="Office: activate to sort column ascending">分类
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1" style="width: 92px;"
-                                                    aria-label="Age: activate to sort column ascending">Age
+                                                    aria-label="Age: activate to sort column ascending">作者
                                                 </th>
                                                 <th class="disabled-sorting text-right sorting" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     style="width: 184px;"
-                                                    aria-label="Actions: activate to sort column ascending">Actions
+                                                    aria-label="Actions: activate to sort column ascending">操作
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody>
-
-                                            <tr role="row" class="odd">
-                                                <td tabindex="0" class="sorting_1">Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">审批</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">编辑</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="even">
-                                                <td class="sorting_1" tabindex="0">Angelica Ramos</td>
-                                                <td>Chief Executive Officer (CEO)</td>
-                                                <td>London</td>
-                                                <td>47</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">审批</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">编辑</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
+                                            <div th:each="blogArticle:${blogArticleList}">
+                                                <tr role="row" class="odd">
+                                                    <td tabindex="0" class="sorting_1"
+                                                        th:text="${blogArticle.articleTitle}"></td>
+                                                    <td th:text="${blogArticle.sortId}"></td>
+                                                    <td th:text="${blogArticle.creater}"></td>
+                                                    <td class="text-right">
+                                                        <a th:href="@{'/detail/'+${blogArticle.articleId}}"
+                                                           class="btn btn-info btn-link btn-icon btn-sm like">编辑</a>
+                                                        <a th:href="@{'/detail/'+${blogArticle.articleId}}"
+                                                           class="btn btn-warning btn-link btn-icon btn-sm edit">审批</a>
+                                                        <a th:href="@{'/detail/'+${blogArticle.articleId}}"
+                                                           class="btn btn-danger btn-link btn-icon btn-sm remove">下架</a>
+                                                    </td>
+                                                </tr>
+                                            </div>
                                             </tbody>
                                         </table>
                                     </div>
@@ -109,20 +92,6 @@
 <script src="/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
-
-        $('#datatable').DataTable({
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
-            responsive: true,
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
-            }
-
-        });
 
         var table = $('#datatable').DataTable();
 

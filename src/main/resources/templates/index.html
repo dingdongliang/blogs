@@ -41,11 +41,10 @@
         <section class="post-list">
             <div th:each="blogArticle:${blogArticleList}">
                 <article class="post post-with-tags">
-                    <header class="post-title"><a th:href="@{'/detail/'+${blogArticle.articleId}}"><label
-                            th:text=${blogArticle.articleTitle}></label></a>
+                    <header class="post-title"><a th:href="@{'/detail/'+${blogArticle.articleId}}" th:text="${blogArticle.articleTitle}"></a>
                     </header>
-                    <div class="post-meta"><span class="post-meta-author" th:text=${blogArticle.creater}></span><span
-                            class="post-meta-ctime" th:text=${blogArticle.created}></span>
+                    <div class="post-meta"><span class="post-meta-author" th:text="${blogArticle.creater}"></span><span
+                            class="post-meta-ctime" th:text="${blogArticle.created}"></span>
                     </div>
                     <p class="post-abstract" th:text="${blogArticle.articleSummary}">
 

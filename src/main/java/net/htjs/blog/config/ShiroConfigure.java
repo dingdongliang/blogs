@@ -126,6 +126,9 @@ public class ShiroConfigure {
         filterChainMap.put("/pmsn/updatePmsn", "anon");
         filterChainMap.put("/pmsn/deletePmsn", "anon");
 
+        filterChainMap.put("/manage/articleSave", SystemConstant.ANON);
+
+
         //有关swagger2的配置，生产环境中注意修改
         filterChainMap.put("/v2/**", SystemConstant.ANON);
         filterChainMap.put("/swagger/**", SystemConstant.ANON);
@@ -149,8 +152,7 @@ public class ShiroConfigure {
         //前端页面访问不需要权限
         filterChainMap.put("/sort/**", SystemConstant.ANON);
         filterChainMap.put("/detail/**", SystemConstant.ANON);
-        filterChainMap.put("/edit", SystemConstant.ANON);
-        filterChainMap.put("/save", SystemConstant.ANON);
+
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainMap.put("/logout", "logout");

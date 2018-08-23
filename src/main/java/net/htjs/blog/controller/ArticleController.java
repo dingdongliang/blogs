@@ -17,10 +17,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,10 +84,9 @@ public class ArticleController {
      * @author dingdongliang
      * @date 2018/8/22 11:54
      */
-    @PostMapping("/save")
+    @PostMapping("/manage/articleSave")
     @ResponseBody
-    public ResponseData save(@RequestBody(required = false) BlogArticle blogArticle) {
-        log.info(blogArticle.getArticleInfo());
+    public ResponseData articleSave(BlogArticle blogArticle) {
 
         blogArticle.setArticleId(StringUtil.getUUID());
         blogArticle.setCreater("1d55fc9860894fbc88d7d79085e2f55f");

@@ -1,9 +1,17 @@
 package net.htjs.blog.controller;
 
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import net.htjs.blog.entity.BlogArticle;
+import net.htjs.blog.entity.SysUser;
+import net.htjs.blog.service.BlogArticleService;
+import net.htjs.blog.service.SysUserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * blog/net.htjs.blog.controller
@@ -15,6 +23,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @Slf4j
 public class PageController {
+
+    @Resource
+    private SysUserService sysUserService;
+    @Resource
+    private BlogArticleService blogArticleService;
+
     /**
      * 前台展示分类页面（按年份分组）
      *
@@ -62,8 +76,10 @@ public class PageController {
      * @author dingdongliang
      * @date 2018/8/22 11:53
      */
-    @GetMapping("/manage/user")
-    public String user() {
+    @RequestMapping("/manage/user")
+    public String user(Model model) {
+        List<SysUser> sysUserList = sysUserService.selectAll();
+        model.addAttribute("sysUserList", sysUserList);
         return "backend/userList";
     }
 
@@ -108,7 +124,12 @@ public class PageController {
 
 
     @GetMapping("/manage/article")
-    public String article() {
+    public String article(Model model) {
+        List<BlogArticle> blogArticleList = blogArticleService.selectAll();
+        for (BlogArticle blogArticle : blogArticleList) {
+            blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
+        }
+        model.addAttribute("blogArticleList", blogArticleList);
         return "backend/articleList";
     }
 

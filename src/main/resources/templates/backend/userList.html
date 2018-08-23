@@ -37,56 +37,45 @@
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="datatable"
                                                     rowspan="1" colspan="1" style="width: 215px;" aria-sort="ascending"
-                                                    aria-label="Name: activate to sort column descending">Name
+                                                    aria-label="Name: activate to sort column descending">姓名
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1" style="width: 327px;"
-                                                    aria-label="Position: activate to sort column ascending">Position
+                                                    aria-label="Account: activate to sort column ascending">账号
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1" style="width: 155px;"
-                                                    aria-label="Office: activate to sort column ascending">Office
+                                                    aria-label="Phone: activate to sort column ascending">电话
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1" style="width: 92px;"
-                                                    aria-label="Age: activate to sort column ascending">Age
+                                                    aria-label="Status: activate to sort column ascending">状态
                                                 </th>
                                                 <th class="disabled-sorting text-right sorting" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     style="width: 184px;"
-                                                    aria-label="Actions: activate to sort column ascending">Actions
+                                                    aria-label="Operate: activate to sort column ascending">操作
                                                 </th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr role="row" class="odd">
-                                                <td tabindex="0" class="sorting_1">Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">角色</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">修改</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="even">
-                                                <td class="sorting_1" tabindex="0">Angelica Ramos</td>
-                                                <td>Chief Executive Officer (CEO)</td>
-                                                <td>London</td>
-                                                <td>47</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">角色</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">修改</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
+                                            <div th:each="sysUser:${sysUserList}">
+                                                <tr role="row" class="even">
+                                                    <td tabindex="0" class="sorting_1"
+                                                        th:text="${sysUser.userName}"></td>
+                                                    <td th:text="${sysUser.account}"></td>
+                                                    <td th:text="${sysUser.phone}"></td>
+                                                    <td th:text="${sysUser.status}"></td>
+                                                    <td class="text-right">
+                                                        <a th:href="@{'/role/'+${sysUser.userId}}"
+                                                           class="btn btn-info btn-link btn-icon btn-sm like">角色</a>
+                                                        <a th:href="@{'/user/'+${sysUser.userId}}"
+                                                           class="btn btn-warning btn-link btn-icon btn-sm edit">重置</a>
+                                                        <a th:href="@{'/user/'+${sysUser.userId}}"
+                                                           class="btn btn-danger btn-link btn-icon btn-sm remove">禁用</a>
+                                                    </td>
+                                                </tr>
+                                            </div>
                                             </tbody>
                                         </table>
                                     </div>
@@ -103,7 +92,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="/js/jquery.dataTables.js "></script>
-<script src="/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+<script src="/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
 

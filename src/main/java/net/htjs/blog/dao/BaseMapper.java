@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * blog/net.htjs.blog.dao
  *
- * @Description: 自定义通用Mapper接口，没有继承tk.mapper接口，因会造成其他问题
+ * @Description: 自定义通用Mapper接口，没有继承tk.mapper接口，因会造成其他问题(多表联合查询，分页排序)
  * @Author: dingdongliang
  * @Date: 2018/8/13 17:29
  */

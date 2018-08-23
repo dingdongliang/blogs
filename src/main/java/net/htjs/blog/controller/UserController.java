@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.constant.SystemConstant;
 import net.htjs.blog.entity.BaseDomain;
+import net.htjs.blog.entity.BlogArticle;
 import net.htjs.blog.entity.SysRole;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.exception.GlobalException;
@@ -58,38 +59,23 @@ public class UserController {
     }
 
     /**
-     * 添加用户,同时分配角色,注意必须有默认角色
+     * 添加用户
      *
-     * @param requestJson 请求的格式为JSONObject
+     * @param sysUser
      * @return net.htjs.blog.exception.ResponseData
      * @author dingdongliang
-     * @date 2018/4/18 16:11
+     * @date 2018/8/23 15:51
      */
-    @RequiresPermissions("user:add")
+    //@RequiresPermissions("user:add")
     @PostMapping("/addUser")
-    public ResponseData addUser(@ApiParam(name = "requestJson",
-            value = "格式为{\"userName\":\"admin\",\"password\":\"admin\",\"realName\":\"good man\",\"roleId\":" +
-                    "\"64205b16f5d04b47aea4b091d88c243e|8cefc3f9409348bb9677118aed62fdfb\"}", required = true)
-                                @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "userName,password,realName,roleId");
+    public ResponseData addUser(SysUser sysUser) {
 
-        String account = requestJson.getString("userName");
-        String password = requestJson.getString("password");
-        String userName = requestJson.getString("realName");
-
-        String roleStr = requestJson.getString("roleId");
-        String[] roleIds = roleStr.split("\\|");
-
-        SysUser sysUser = new SysUser();
-        String userId = StringUtil.getUUID();
-        sysUser.setUserId(userId);
-        sysUser.setUserName(userName);
-        sysUser.setAccount(account);
-        sysUser.setUserPwd(StringUtil.encryptPassword(password, account));
+        sysUser.setUserId(StringUtil.getUUID());
+        sysUser.setUserPwd(StringUtil.encryptPassword(SystemConstant.DEFAULT_CREDENTIAL, sysUser.getAccount()));
 
         BaseDomain.createLog(sysUser);
 
-        sysUserService.insert(sysUser, roleIds);
+        sysUserService.insert(sysUser);
 
         return ResponseData.success();
     }

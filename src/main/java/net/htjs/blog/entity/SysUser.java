@@ -20,8 +20,6 @@ public class SysUser extends BaseDomain{
 
     private String userName;
 
-    private Date registerTime;
-
     private String account;
 
     private String userPwd;
