@@ -27,7 +27,7 @@
                         <i class="nc-icon nc-single-02"></i>
                       </span>
                                 </div>
-                                <input type="text" class="form-control" name="account" placeholder="输入登录帐号">
+                                <input type="text" class="form-control" id="account" placeholder="输入登录帐号">
                             </div>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -35,7 +35,7 @@
                         <i class="nc-icon nc-key-25"></i>
                       </span>
                                 </div>
-                                <input type="password" name="userPwd" placeholder="输入登录密码" class="form-control">
+                                <input type="password" id="userPwd" placeholder="输入登录密码" class="form-control">
                             </div>
                             <br>
                             <div class="form-group">
@@ -49,8 +49,8 @@
                             </div>
                         </div>
                         <div class="card-footer ">
-                            <input type="submit" value="登录" id="submit"
-                                   class="btn btn-warning btn-round btn-block mb-3"/>
+                            <a href="javascript:void(0)" id="submit"
+                               class="btn btn-warning btn-round btn-block mb-3">登录</a>
                         </div>
                     </div>
                 </form>
@@ -81,5 +81,35 @@
     </footer>
     <div class="full-page-background" style="background-image: url(/images/fabio-mangione.jpg)"></div>
 </div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap-notify.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#submit").click(function () {
+            $.ajax({
+                url: "/login",
+                data: {
+                    "account": $("#account").val(),
+                    "userPwd": $("#userPwd").val()
+                },
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    if (data.status === true) {
+                        window.location.href = "/manage/main";
+                    } else {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "登录失败:" + data.message
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

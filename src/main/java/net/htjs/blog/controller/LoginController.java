@@ -1,9 +1,7 @@
 package net.htjs.blog.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.constant.RespCodeEnum;
 import net.htjs.blog.entity.SysPermission;
@@ -13,13 +11,14 @@ import net.htjs.blog.exception.GlobalException;
 import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.SysPermissionService;
 import net.htjs.blog.service.SysUserService;
-import net.htjs.blog.util.JsonUtil;
 import net.htjs.blog.util.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +33,7 @@ import java.util.Set;
  * @Author: dingdongliang
  * @Date: 2018/8/14 10:10
  */
-@Controller
+@RestController
 @Api(value = "航天金穗大数据组技术博客-用户登录接口（登录验证和退出）")
 @Slf4j
 public class LoginController {
@@ -45,7 +44,7 @@ public class LoginController {
     private SysPermissionService sysPermissionService;
 
     /**
-     * 登录验证,跳转到后台管理首页
+     * 登录验证
      *
      * @return net.htjs.blog.exception.ResponseData
      * @author dingdongliang
@@ -53,7 +52,7 @@ public class LoginController {
      */
     @ApiOperation(value = "用户登陆方法", notes = "详细说明文档")
     @PostMapping("/login")
-    public String authLogin(HttpServletRequest request) throws GlobalException {
+    public ResponseData authLogin(HttpServletRequest request) throws GlobalException {
 
         String account = request.getParameter("account");
         String userPwd = request.getParameter("userPwd");
@@ -89,7 +88,7 @@ public class LoginController {
             throw new ApiException(RespCodeEnum.STH_ERROR);
         }
 
-        return "backend/main";
+        return ResponseData.success(setUserPmsn((SysUser) currentUser.getPrincipal()));
     }
 
     /**
@@ -100,7 +99,6 @@ public class LoginController {
      * @date 2018/4/18 14:23
      */
     @PostMapping("/logout")
-    @ResponseBody
     public ResponseData logout() throws GlobalException {
         try {
             Subject currentUser = SecurityUtils.getSubject();
@@ -120,7 +118,6 @@ public class LoginController {
      * @date 2018/4/23 17:51
      */
     @GetMapping("/getCurrentPmsn")
-    @ResponseBody
     public ResponseData getCurrentPmsn() {
 
         String userId = ShiroUtil.getUserId();
