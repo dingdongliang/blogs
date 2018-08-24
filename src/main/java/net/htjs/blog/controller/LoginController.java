@@ -18,12 +18,11 @@ import net.htjs.blog.util.ShiroUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +34,7 @@ import java.util.Set;
  * @Author: dingdongliang
  * @Date: 2018/8/14 10:10
  */
-@RestController
+@Controller
 @Api(value = "航天金穗大数据组技术博客-用户登录接口（登录验证和退出）")
 @Slf4j
 public class LoginController {
@@ -46,7 +45,7 @@ public class LoginController {
     private SysPermissionService sysPermissionService;
 
     /**
-     * 登录验证
+     * 登录验证,跳转到后台管理首页
      *
      * @return net.htjs.blog.exception.ResponseData
      * @author dingdongliang
@@ -54,23 +53,21 @@ public class LoginController {
      */
     @ApiOperation(value = "用户登陆方法", notes = "详细说明文档")
     @PostMapping("/login")
-    public ResponseData authLogin(@ApiParam(name = "requestJson",
-            value = "格式为{\"userName\": \"admin\"," + "\"password\": \"admin\"}", required = true)
-                                  @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "userName,password");
+    public String authLogin(HttpServletRequest request) throws GlobalException {
 
-        String account = requestJson.getString("userName");
-        String password = requestJson.getString("password");
+        String account = request.getParameter("account");
+        String userPwd = request.getParameter("userPwd");
 
         Subject currentUser = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(
-                account, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(account, userPwd);
+
         try {
+
             if (!currentUser.isAuthenticated()) {
                 token.setRememberMe(false);
                 currentUser.login(token);
             }
-            log.debug("对用户[{}]进行登录验证..验证通过", account);
+            log.info("对用户[{}]进行登录验证..验证通过", account);
 
         } catch (UnknownAccountException e) {
             log.error(RespCodeEnum.NO_ACCOUNT.getMessage());
@@ -92,7 +89,7 @@ public class LoginController {
             throw new ApiException(RespCodeEnum.STH_ERROR);
         }
 
-        return ResponseData.success(setUserPmsn((SysUser) currentUser.getPrincipal()));
+        return "backend/main";
     }
 
     /**
@@ -103,6 +100,7 @@ public class LoginController {
      * @date 2018/4/18 14:23
      */
     @PostMapping("/logout")
+    @ResponseBody
     public ResponseData logout() throws GlobalException {
         try {
             Subject currentUser = SecurityUtils.getSubject();
@@ -122,6 +120,7 @@ public class LoginController {
      * @date 2018/4/23 17:51
      */
     @GetMapping("/getCurrentPmsn")
+    @ResponseBody
     public ResponseData getCurrentPmsn() {
 
         String userId = ShiroUtil.getUserId();

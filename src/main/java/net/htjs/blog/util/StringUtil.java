@@ -24,6 +24,7 @@ public class StringUtil {
     public static boolean isNullOrEmpty(Object obj) {
         return null == obj || "".equals(obj);
     }
+
     /**
      * 根据用户名和密码进行两次MD5加密
      *
@@ -37,6 +38,7 @@ public class StringUtil {
         return new SimpleHash(SystemConstant.ALGORITHMNAME, pwd, ByteSource.Util.bytes(salt),
                 SystemConstant.HASHITERATIONS).toHex();
     }
+
     /**
      * 获取一个32位UUID主键
      *
