@@ -80,12 +80,12 @@ public class BaseDomain implements Serializable {
     private static void createLog(BaseDomain domain, boolean flag) {
 
         Session session = SecurityUtils.getSubject().getSession();
-        JSONObject userInfo = (JSONObject) session.getAttribute(SystemConstant.SESSION_USER_INFO);
+        SysUser sysUser = (SysUser) session.getAttribute(SystemConstant.SESSION_USER_INFO);
         String userId;
-        if (userInfo == null) {
-            userId = "1d55fc9860894fbc88d7d79085e2f55f";
+        if (sysUser == null) {
+            userId = SystemConstant.TEST_USER_ID;
         } else {
-            userId = userInfo.getString("userId");
+            userId = sysUser.getUserId();
         }
 
         if (flag) {

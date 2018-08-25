@@ -2,6 +2,7 @@ package net.htjs.blog.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import net.htjs.blog.entity.BaseDomain;
 import net.htjs.blog.entity.BlogArticle;
 import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.BlogArticleService;
@@ -89,8 +90,9 @@ public class ArticleController {
     public ResponseData articleSave(BlogArticle blogArticle) {
 
         blogArticle.setArticleId(StringUtil.getUUID());
-        blogArticle.setCreater("1d55fc9860894fbc88d7d79085e2f55f");
-        blogArticle.setModifyer("1d55fc9860894fbc88d7d79085e2f55f");
+
+        BaseDomain.createLog(blogArticle);
+
         blogArticle.setArticleViews(1);
 
         blogArticleService.insert(blogArticle);

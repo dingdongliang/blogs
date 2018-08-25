@@ -66,7 +66,7 @@ public class UserController {
      * @author dingdongliang
      * @date 2018/8/23 15:51
      */
-    //@RequiresPermissions("user:add")
+    @RequiresPermissions("user:add")
     @PostMapping("/addUser")
     public ResponseData addUser(SysUser sysUser) {
 
