@@ -34,8 +34,8 @@ public class SwaggerConfigurer {
     private ApiInfo apiInfo() {
         Contact contact = new Contact("dyenigma", "https://github.com/dingdongliang", "dyenigma@163.com");
         return new ApiInfoBuilder()
-                .title("航天金穗大数据组技术博客")
-                .description("航天金穗大数据组出品")
+                .title("航天金穗研发部技术拾遗")
+                .description("made by dyenigma")
                 .contact(contact)
                 .version("0.5")
                 .build();

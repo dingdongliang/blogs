@@ -50,7 +50,7 @@ public class PageController {
      * @author dingdongliang
      * @date 2018/8/22 11:52
      */
-    @GetMapping("/manage/login")
+    @GetMapping("/logon")
     public String login() {
         return "login";
     }

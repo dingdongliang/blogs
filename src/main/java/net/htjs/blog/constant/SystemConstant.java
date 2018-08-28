@@ -38,6 +38,11 @@ public class SystemConstant {
     public static final String ANON = "anon";
 
     /**
+     * 登录页面访问地址
+     */
+    public static final String LOGIN_PATH = "/logon";
+
+    /**
      * 状态，有效的为E，无效的为I
      */
     public static final String EFFECTIVE = "E";

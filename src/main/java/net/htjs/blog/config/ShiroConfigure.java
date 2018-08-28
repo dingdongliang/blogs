@@ -86,8 +86,12 @@ public class ShiroConfigure {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-
-        shiroFilter.setUnauthorizedUrl("/manage/login");
+        //这里的配置适用于SpringMVC，不适用于SpringBoot
+        shiroFilter.setLoginUrl(SystemConstant.LOGIN_PATH);
+        //制定登录成功后的连接，但有时候并没用作用，具体细节见源码onLoginSuccess、redirectToSaveRequest方法
+        shiroFilter.setSuccessUrl(SystemConstant.LOGIN_PATH);
+        //未授权时跳转的页面
+        shiroFilter.setUnauthorizedUrl(SystemConstant.LOGIN_PATH);
 
         //自定义拦截器，包含限制同一帐号同时在线的个数，添加casFilter到shiroFilter中，未授权的跳转等
         Map<String, Filter> filtersMap = new LinkedHashMap<>();
@@ -97,36 +101,6 @@ public class ShiroConfigure {
         shiroFilter.setFilters(filtersMap);
 
         Map<String, String> filterChainMap = new LinkedHashMap<>();
-
-        filterChainMap.put("/", "anon");
-        filterChainMap.put("/error", "anon");
-
-        //TODO 初步测试时使用，正式应用需要去掉
-//        filterChainMap.put("/manage/main", "anon");
-//        filterChainMap.put("/manage/user", "anon");
-//        filterChainMap.put("/manage/role", "anon");
-//        filterChainMap.put("/manage/pmsn", "anon");
-//        filterChainMap.put("/manage/userInfo", "anon");
-//        filterChainMap.put("/manage/article", "anon");
-//        filterChainMap.put("/manage/articleEdit", "anon");
-//        filterChainMap.put("/manage/userEdit", "anon");
-//        filterChainMap.put("/manage/roleEdit", "anon");
-//        filterChainMap.put("/manage/pmsnEdit", "anon");
-//        filterChainMap.put("/uploadfile", "anon");
-//        filterChainMap.put("/getCurrentPmsn", "anon");
-//        filterChainMap.put("/user/addUser", "anon");
-//        filterChainMap.put("/user/updateUser", "anon");
-//        filterChainMap.put("/user/userList", "anon");
-//        filterChainMap.put("/role/roleList", "anon");
-//        filterChainMap.put("/role/addRole", "anon");
-//        filterChainMap.put("/role/updateRole", "anon");
-//        filterChainMap.put("/role/deleteRole", "anon");
-//        filterChainMap.put("/pmsn/getAllPmsn", "anon");
-//        filterChainMap.put("/pmsn/addPmsn", "anon");
-//        filterChainMap.put("/pmsn/updatePmsn", "anon");
-//        filterChainMap.put("/pmsn/deletePmsn", "anon");
-//        filterChainMap.put("/manage/articleSave", SystemConstant.ANON);
-
 
         // 有关swagger2的配置，生产环境中注意修改
         filterChainMap.put("/v2/**", SystemConstant.ANON);
@@ -143,17 +117,18 @@ public class ShiroConfigure {
         filterChainMap.put("/fonts/**", SystemConstant.ANON);
         filterChainMap.put("/plugins/**", SystemConstant.ANON);
         filterChainMap.put("/upload/**", SystemConstant.ANON);
+        filterChainMap.put("/json/**", SystemConstant.ANON);
         filterChainMap.put("/favicon.ico", SystemConstant.ANON);
 
         //数据源druid访问的控制，生产环境中注意修改
         filterChainMap.put("/druid/**", SystemConstant.ANON);
 
-        //前端页面访问不需要权限,登录页面不需要权限
+        //前端页面访问不需要权限,登录页面以及登录验证不需要权限
+        filterChainMap.put("/", "anon");
         filterChainMap.put("/sort/**", SystemConstant.ANON);
         filterChainMap.put("/detail/**", SystemConstant.ANON);
-        filterChainMap.put("/manage/login", SystemConstant.ANON);
+        filterChainMap.put(SystemConstant.LOGIN_PATH, SystemConstant.ANON);
         filterChainMap.put("/login", SystemConstant.ANON);
-
 
         // 配置退出过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterChainMap.put("/logout", "logout");
