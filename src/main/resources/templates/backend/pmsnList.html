@@ -4,11 +4,13 @@
     <meta charset="utf-8"/>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>航天金穗大数据组技术博客</title>
+    <title>航天金穗研发部技术拾遗</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
     <link href="/css/m-font-awesome.css" rel="stylesheet"/>
     <link href="/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/css/paper-dashboard.css?v=2.0.0" rel="stylesheet"/>
+    <link href="/css/bootstrap-table.css" rel="stylesheet">
+    <link href="/css/jquery.treegrid.css" rel="stylesheet">
 </head>
 <body>
 <div class="wrapper">
@@ -22,79 +24,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="/manage/pmsnEdit" class="btn btn-primary btn-lg" role="button"
-                               aria-disabled="false">新增权限菜单</a>
+                            权限列表
                         </div>
                         <div class="card-body">
-
-                            <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <table id="datatable"
-                                               class="table table-striped table-bordered dataTable dtr-inline"
-                                               cellspacing="0" width="100%" role="grid"
-                                               aria-describedby="datatable_info" style="width: 100%;">
-                                            <thead>
-                                            <tr role="row">
-                                                <th class="sorting_asc" tabindex="0" aria-controls="datatable"
-                                                    rowspan="1" colspan="1" style="width: 215px;" aria-sort="ascending"
-                                                    aria-label="Name: activate to sort column descending">Name
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1" style="width: 327px;"
-                                                    aria-label="Position: activate to sort column ascending">Position
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1" style="width: 155px;"
-                                                    aria-label="Office: activate to sort column ascending">Office
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1" style="width: 92px;"
-                                                    aria-label="Age: activate to sort column ascending">Age
-                                                </th>
-                                                <th class="disabled-sorting text-right sorting" tabindex="0"
-                                                    aria-controls="datatable" rowspan="1" colspan="1"
-                                                    style="width: 184px;"
-                                                    aria-label="Actions: activate to sort column ascending">Actions
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <tr role="row" class="odd">
-                                                <td tabindex="0" class="sorting_1">Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">禁用</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">修改</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
-                                            <tr role="row" class="even">
-                                                <td class="sorting_1" tabindex="0">Angelica Ramos</td>
-                                                <td>Chief Executive Officer (CEO)</td>
-                                                <td>London</td>
-                                                <td>47</td>
-                                                <td class="text-right">
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-info btn-link btn-icon btn-sm like">禁用</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-warning btn-link btn-icon btn-sm edit">修改</a>
-                                                    <a href="javascript:void(0);"
-                                                       class="btn btn-danger btn-link btn-icon btn-sm remove">删除</a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                            <table id="table"></table>
                         </div>
                     </div>
                 </div>
@@ -106,45 +39,77 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="/js/jquery.dataTables.js "></script>
-<script src="/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+<script src="/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-table.js"></script>
+<script src="/js/bootstrap-table-zh-CN.js"></script>
+<script src="/js/bootstrap-table-treegrid.js"></script>
+<script src="/js/jquery.treegrid.js"></script>
+
 <script>
-    $(document).ready(function () {
-        $('#datatable').DataTable({
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
+    $(function () {
+        var $table = $("#table");
+        $table.bootstrapTable({
+            url: 'http://localhost:8787/json/bootstrap_treegrid.json',
+            striped: true,
+            sidePagenation: 'server',
+            idField: 'id',
+            columns: [
+                {
+                    field: 'ck',
+                    checkbox: true
+                }, {
+                    field: 'name',
+                    title: '名称'
+                }, {
+                    field: 'referred',
+                    title: '简称'
+                }, {
+                    field: 'Button',
+                    title: '操作',
+                    events: operateEvents, //给按钮注册事件
+                    formatter: AddFunctionAlty //表格中增加按钮
+                }
             ],
-            responsive: true,
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
+            treeShowField: 'name',
+            parentIdField: 'pid',
+            onLoadSuccess: function (data) {
+                $table.treegrid({
+                    initialState: 'collapsed',//收缩
+                    treeColumn: 1,//指明第几列数据改为树形
+                    expanderExpandedClass: 'glyphicon treegrid-expander-expanded',
+                    expanderCollapsedClass: 'glyphicon treegrid-expander-collapsed',
+                    onChange: function () {
+                        $table.bootstrapTable('resetWidth');
+                    }
+                });
             }
-
         });
+    })
 
-        var table = $('#datatable').DataTable();
+    /**
+     * @return {string}
+     */
+    function AddFunctionAlty(value, row, index) {
+        return [
+            '<button id="TableEditor" class="btn btn-info btn-link btn-icon btn-sm edit">编辑</button>&nbsp;&nbsp;',
+            '<button id="TableSon" class="btn btn-warning btn-link btn-icon btn-sm like">添加</button>&nbsp;&nbsp;',
+            '<button id="TableDelete" class="btn btn-danger btn-link btn-icon btn-sm remove">删除</button>'
+        ].join("");
+    }
 
-        // Edit record
-        table.on('click', '.edit', function () {
-            $tr = $(this).closest('tr');
+    window.operateEvents = {
+        "click #TableEditor": function (e, value, row, index) {
+            //编辑按钮事件
+        },
+        "click #TableSon": function () {
+            //编辑按钮事件
+        },
+        "click #TableDelete": function () {
+            $(this).parent().parent().remove();
+        }
+    }
 
-            var data = table.row($tr).data();
-            alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
-        });
-
-        // Delete a record
-        table.on('click', '.remove', function (e) {
-            $tr = $(this).closest('tr');
-            table.row($tr).remove().draw();
-            e.preventDefault();
-        });
-
-        //Like record
-        table.on('click', '.like', function () {
-            alert('权限禁用');
-        });
-    });
 </script>
 </body>
 </html>
