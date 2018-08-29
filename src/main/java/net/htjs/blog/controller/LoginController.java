@@ -34,7 +34,7 @@ import java.util.Set;
  * @Date: 2018/8/14 10:10
  */
 @RestController
-@Api(value = "航天金穗大数据组技术博客-用户登录接口（登录验证和退出）")
+@Api(value = "航天金穗研发部技术拾遗-用户登录接口（登录验证和退出）")
 @Slf4j
 public class LoginController {
 

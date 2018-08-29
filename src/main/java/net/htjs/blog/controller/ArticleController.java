@@ -30,7 +30,7 @@ import java.util.Map;
  * @Date: 2018/8/13 16:35
  */
 @Controller
-@Api(value = "航天金穗大数据组技术博客-文章操作接口")
+@Api(value = "航天金穗研发部技术拾遗-文章操作接口")
 @Slf4j
 public class ArticleController {
     @Resource

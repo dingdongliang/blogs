@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/pmsn")
-@Api(value = "航天金穗大数据组技术博客-权限相关操作接口")
+@Api(value = "航天金穗研发部技术拾遗-权限相关操作接口")
 @Slf4j
 public class PmsnController {
 

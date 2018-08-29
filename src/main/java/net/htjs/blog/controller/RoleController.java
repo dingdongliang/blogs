@@ -28,7 +28,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/role")
-@Api(value = "航天金穗大数据组技术博客-角色相关操作接口")
+@Api(value = "航天金穗研发部技术拾遗-角色相关操作接口")
 @Slf4j
 public class RoleController {
 
