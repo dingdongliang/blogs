@@ -50,7 +50,7 @@
     $(function () {
         var $table = $("#table");
         $table.bootstrapTable({
-            url: 'http://localhost:8787/json/bootstrap_treegrid.json',
+            url: '/pmsn/getAllPmsn',
             striped: true,
             sidePagenation: 'server',
             idField: 'id',
@@ -59,11 +59,20 @@
                     field: 'ck',
                     checkbox: true
                 }, {
-                    field: 'name',
-                    title: '名称'
+                    field: 'menuName',
+                    title: '菜单名称'
                 }, {
-                    field: 'referred',
-                    title: '简称'
+                    field: 'menuCode',
+                    title: '菜单编码'
+                }, {
+                    field: 'pmsnCode',
+                    title: '权限编码'
+                }, {
+                    field: 'pmsnType',
+                    title: '权限类型'
+                }, {
+                    field: 'pmsnUrl',
+                    title: '权限地址'
                 }, {
                     field: 'Button',
                     title: '操作',

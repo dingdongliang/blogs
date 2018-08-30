@@ -2,9 +2,12 @@ package net.htjs.blog.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.entity.BlogArticle;
+import net.htjs.blog.entity.SysPermission;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.service.BlogArticleService;
+import net.htjs.blog.service.SysPermissionService;
 import net.htjs.blog.service.SysUserService;
+import net.htjs.blog.util.ShiroUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,8 @@ public class PageController {
     private SysUserService sysUserService;
     @Resource
     private BlogArticleService blogArticleService;
+    @Resource
+    private SysPermissionService sysPermissionService;
 
     /**
      * 前台展示分类页面（按年份分组）
@@ -56,7 +61,7 @@ public class PageController {
     }
 
     /**
-     * 后台管理首页
+     * 后台管理首页, TODO 临时获取所有菜单，需要修改成根据当前用户获取菜单
      *
      * @param
      * @return java.lang.String
@@ -64,7 +69,9 @@ public class PageController {
      * @date 2018/8/22 11:53
      */
     @GetMapping("/manage/main")
-    public String main() {
+    public String main(Model model) {
+        List<SysPermission> sysPermissionList = sysPermissionService.selectAllMenu();
+        model.addAttribute("sysPermissionList", sysPermissionList);
         return "backend/main";
     }
 
@@ -117,7 +124,7 @@ public class PageController {
      * @author dingdongliang
      * @date 2018/8/22 11:59
      */
-    @GetMapping("/manage/userInfo")
+    @GetMapping("/manage/system")
     public String userInfo() {
         return "backend/userInfo";
     }
@@ -133,21 +140,53 @@ public class PageController {
         return "backend/articleList";
     }
 
+    /**
+     * 文章编辑跳转，TODO 新增和编辑
+     *
+     * @param
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/30 14:42
+     */
     @GetMapping("/manage/articleEdit")
     public String articleEdit() {
         return "backend/articleEdit";
     }
 
+    /**
+     * 用户编辑跳转，TODO 新增和编辑
+     *
+     * @param
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/30 14:42
+     */
     @GetMapping("/manage/userEdit")
     public String userEdit() {
         return "backend/userEdit";
     }
 
+    /**
+     * 角色编辑跳转，TODO 新增和编辑
+     *
+     * @param
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/30 14:43
+     */
     @GetMapping("/manage/roleEdit")
     public String roleEdit() {
         return "backend/roleEdit";
     }
 
+    /**
+     * 权限编辑跳转，TODO 新增和编辑
+     *
+     * @param
+     * @return java.lang.String
+     * @author dingdongliang
+     * @date 2018/8/30 14:43
+     */
     @GetMapping("/manage/pmsnEdit")
     public String pmsnEdit() {
         return "backend/pmsnEdit";

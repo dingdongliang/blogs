@@ -25,6 +25,7 @@ public interface SysPermissionService extends BaseService<SysPermission> {
 
     /**
      * 查询当前登录用户的权限等信息
+     *
      * @param sysUser 当前用户
      * @return java.util.List<net.htjs.blog.entity.SysPermission>
      * @author dingdongliang
@@ -41,5 +42,24 @@ public interface SysPermissionService extends BaseService<SysPermission> {
      * @date 2018/4/25 16:24
      */
     void delete(String pmsnId);
+
+    /**
+     * 查询当前用户的菜单信息，不包含按钮
+     *
+     * @param userId 当前登录用户的ID
+     * @return java.util.List<net.htjs.blog.entity.SysPermission>
+     * @author dingdongliang
+     * @date 2018/8/30 8:48
+     */
+    List<SysPermission> getUserMenu(String userId);
+
+    /**
+     * 获取所有菜单信息，不包括按钮
+     * @param
+     * @return java.util.List<net.htjs.blog.entity.SysPermission>
+     * @author dingdongliang
+     * @date 2018/8/30 14:40
+     */
+    List<SysPermission> selectAllMenu();
 }
 

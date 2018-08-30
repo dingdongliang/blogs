@@ -57,7 +57,6 @@ CREATE TABLE `sys_permission` (
   `PRNT_ID` varchar(32) DEFAULT NULL COMMENT '父权限ID',
   `PRNT_NAME` varchar(100) DEFAULT NULL COMMENT '父权限名称',
   `PMSN_CODE` varchar(100) NOT NULL COMMENT '权限代码',
-  `PMSN_NAME` varchar(100) NOT NULL COMMENT '权限名称',
   `PMSN_TYPE` varchar(100) NOT NULL DEFAULT 'menu' COMMENT '权限资源类型(menu为菜单、button为按钮)',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
   `PMSN_URL` varchar(500) DEFAULT NULL COMMENT '权限对应URL',

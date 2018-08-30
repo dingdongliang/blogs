@@ -8,35 +8,11 @@
         </a>
     </div>
     <div class="sidebar-wrapper">
-        <ul class="nav">
+        <ul class="nav" th:each="sysPermission:${sysPermissionList}">
             <li>
-                <a href="/manage/user">
+                <a href="/manage/user" th:href="@{${sysPermission.pmsnUrl}}">
                     <i class="nc-icon nc-single-02"></i>
-                    <p>用户管理</p>
-                </a>
-            </li>
-            <li>
-                <a href="/manage/role">
-                    <i class="nc-icon nc-hat-3"></i>
-                    <p>角色管理</p>
-                </a>
-            </li>
-            <li>
-                <a href="/manage/pmsn">
-                    <i class="nc-icon nc-touch-id"></i>
-                    <p>权限管理</p>
-                </a>
-            </li>
-            <li class="active">
-                <a href="/manage/article">
-                    <i class="nc-icon nc-paper"></i>
-                    <p>文章管理</p>
-                </a>
-            </li>
-            <li>
-                <a href="/manage/userInfo">
-                    <i class="nc-icon nc-badge"></i>
-                    <p>修改密码</p>
+                    <p th:text="${sysPermission.menuName}"></p>
                 </a>
             </li>
         </ul>

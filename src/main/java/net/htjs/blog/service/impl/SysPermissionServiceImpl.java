@@ -1,12 +1,12 @@
 package net.htjs.blog.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.constant.SystemConstant;
 import net.htjs.blog.dao.SysPermissionMapper;
 import net.htjs.blog.dao.SysRolePmsnMapper;
 import net.htjs.blog.entity.SysPermission;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.service.SysPermissionService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Service;
@@ -78,5 +78,15 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     public void delete(String pmsnId) {
         sysRolePmsnMapper.deleteByPmsnId(pmsnId);
         sysPermissionMapper.deleteByPrimaryKey(pmsnId);
+    }
+
+    @Override
+    public List<SysPermission> getUserMenu(String userId) {
+        return sysPermissionMapper.getUserMenu(userId);
+    }
+
+    @Override
+    public List<SysPermission> selectAllMenu() {
+        return sysPermissionMapper.selectAllMenu();
     }
 }

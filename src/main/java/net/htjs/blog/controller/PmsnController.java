@@ -65,7 +65,6 @@ public class PmsnController {
         String menuName = requestJson.getString("menuName");
         String menuCode = requestJson.getString("menuCode");
         String pmsnCode = requestJson.getString("pmsnCode");
-        String pmsnName = requestJson.getString("pmsnName");
         String pmsnType = requestJson.getString("pmsnType");
         String status = requestJson.getString("status");
 
@@ -75,7 +74,6 @@ public class PmsnController {
         sysPermission.setMenuCode(menuCode);
         sysPermission.setMenuName(menuName);
         sysPermission.setPmsnCode(pmsnCode);
-        sysPermission.setPmsnName(pmsnName);
         sysPermission.setPmsnType(pmsnType);
         sysPermission.setStatus(status);
         BaseDomain.createLog(sysPermission);
@@ -121,9 +119,6 @@ public class PmsnController {
             }
             if (pmsnCode != null) {
                 sysPermission.setPmsnCode(pmsnCode);
-            }
-            if (pmsnName != null) {
-                sysPermission.setPmsnName(pmsnName);
             }
             if (pmsnType != null) {
                 sysPermission.setPmsnType(pmsnType);
