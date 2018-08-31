@@ -1,6 +1,8 @@
 package net.htjs.blog.config;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -24,5 +26,18 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/upload/**").addResourceLocations("file:" + folder);
+    }
+
+    /**
+     * thymeleaf布局用
+     *
+     * @param
+     * @return nz.net.ultraq.thymeleaf.LayoutDialect
+     * @author dingdongliang
+     * @date 2018/8/31 10:03
+     */
+    @Bean
+    public LayoutDialect layoutDialect() {
+        return new LayoutDialect();
     }
 }

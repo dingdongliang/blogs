@@ -56,7 +56,7 @@ public class ArticleController {
             blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
         }
         model.addAttribute("blogArticleList", blogArticleList);
-        return "index";
+        return "front/index";
     }
 
 

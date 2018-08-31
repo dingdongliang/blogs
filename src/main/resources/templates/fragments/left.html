@@ -1,0 +1,16 @@
+<div class="sidebar" data-color="white" data-active-color="danger" th:fragment="left"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="logo">
+        <a href="/manage/main" class="simple-text logo-normal">航天金穗研发部技术拾遗</a>
+    </div>
+    <div class="sidebar-wrapper">
+        <ul class="nav" th:each="sysPermission:${session.sysPermissionList}">
+            <li>
+                <a th:href="@{${sysPermission.pmsnUrl}}">
+                    <i class="nc-icon" th:classappend="${sysPermission.pmsnIcon}"></i>
+                    <p th:text="${sysPermission.menuName}"></p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

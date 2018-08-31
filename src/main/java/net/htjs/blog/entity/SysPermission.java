@@ -26,6 +26,8 @@ public class SysPermission extends BaseDomain {
 
     private String pmsnCode;
 
+    private String pmsnIcon;
+
     private String pmsnType = "menu";
 
     private String status = "E";

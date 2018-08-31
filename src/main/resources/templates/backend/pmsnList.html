@@ -1,124 +1,203 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="utf-8"/>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>航天金穗研发部技术拾遗</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
+    <title>航天金穗研发部技术拾遗-权限管理</title>
     <link href="/css/m-font-awesome.css" rel="stylesheet"/>
-    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/css/paper-dashboard.css?v=2.0.0" rel="stylesheet"/>
     <link href="/css/bootstrap-table.css" rel="stylesheet">
     <link href="/css/jquery.treegrid.css" rel="stylesheet">
 </head>
 <body>
-<div class="wrapper">
-    <div th:replace="left::left"></div>
-    <div class="main-panel">
-        <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-            <div th:replace="header::header"></div>
-        </nav>
-        <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            权限列表
-                        </div>
-                        <div class="card-body">
-                            <table id="table"></table>
-                        </div>
-                    </div>
+<div class="content" layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <a href="javascript:void(0)" class="btn btn-primary btn-lg" role="button"
+                       aria-disabled="false" data-toggle="modal" data-target="#pmsnEdit">新增权限菜单</a>
+                </div>
+                <div class="card-body">
+                    <table id="table"></table>
                 </div>
             </div>
         </div>
-        <div th:replace="footer::footer"></div>
+    </div>
+    <!--添加、编辑权限弹出框-->
+    <div class="modal fade" id="pmsnEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">新增权限表单</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <div class="form-check-radio form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="pmsnType" id="pmsnTypeMenu"
+                                           value="menu" checked="">
+                                    菜单
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                            <div class="form-check-radio form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="pmsnType" id="pmsnTypeButton"
+                                           value="button">
+                                    按钮
+                                    <span class="form-check-sign"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="required" type="checkbox" value="">
+                                    是否通用权限
+                                    <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-caps-small"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="menuName" placeholder="这里输入权限名称">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-lock-circle-open"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="menuCode" placeholder="这里输入菜单代码，比如：user">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-key-25"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="pmsnCode" placeholder="这里输入权限代码，比如：user:add">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-minimal-right"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="prntName" placeholder="这里选择父级节点">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-bank"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="pmsnUrl" placeholder="这里输入权限对应地址">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-paper"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="pmsnDesc" placeholder="这里输入权限描述">
+                    </div>
+                    <div class="form-group">
+                        <select id="pmsnIcon" class="form-control">
+                            <option selected>选择权限ICON</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<script src="/js/jquery.min.js"></script>
-<script src="/js/perfect-scrollbar.jquery.min.js"></script>
-<script src="/js/jquery.dataTables.js "></script>
-<script src="/js/paper-dashboard.js?v=2.0.0" type="text/javascript"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/bootstrap-table.js"></script>
-<script src="/js/bootstrap-table-zh-CN.js"></script>
-<script src="/js/bootstrap-table-treegrid.js"></script>
-<script src="/js/jquery.treegrid.js"></script>
+<th:block layout:fragment="bodyAssets">
+    <script src="/js/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <script src="/js/bootstrap-table-treegrid.js"></script>
+    <script src="/js/jquery.treegrid.js"></script>
 
-<script>
-    $(function () {
-        var $table = $("#table");
-        $table.bootstrapTable({
-            url: '/pmsn/getAllPmsn',
-            striped: true,
-            sidePagenation: 'server',
-            idField: 'id',
-            columns: [
-                {
-                    field: 'ck',
-                    checkbox: true
-                }, {
-                    field: 'menuName',
-                    title: '菜单名称'
-                }, {
-                    field: 'menuCode',
-                    title: '菜单编码'
-                }, {
-                    field: 'pmsnCode',
-                    title: '权限编码'
-                }, {
-                    field: 'pmsnType',
-                    title: '权限类型'
-                }, {
-                    field: 'pmsnUrl',
-                    title: '权限地址'
-                }, {
-                    field: 'Button',
-                    title: '操作',
-                    events: operateEvents, //给按钮注册事件
-                    formatter: AddFunctionAlty //表格中增加按钮
-                }
-            ],
-            treeShowField: 'name',
-            parentIdField: 'pid',
-            onLoadSuccess: function (data) {
-                $table.treegrid({
-                    initialState: 'collapsed',//收缩
-                    treeColumn: 1,//指明第几列数据改为树形
-                    expanderExpandedClass: 'glyphicon treegrid-expander-expanded',
-                    expanderCollapsedClass: 'glyphicon treegrid-expander-collapsed',
-                    onChange: function () {
-                        $table.bootstrapTable('resetWidth');
+    <script>
+        $(function () {
+            var $table = $("#table");
+            $table.bootstrapTable({
+                url: '/pmsn/getAllPmsn',
+                striped: true,
+                sidePagenation: 'server',
+                idField: 'id',
+                columns: [
+                    {
+                        field: 'ck',
+                        checkbox: true
+                    }, {
+                        field: 'menuName',
+                        title: '菜单名称'
+                    }, {
+                        field: 'menuCode',
+                        title: '菜单编码'
+                    }, {
+                        field: 'pmsnCode',
+                        title: '权限编码'
+                    }, {
+                        field: 'pmsnType',
+                        title: '权限类型'
+                    }, {
+                        field: 'pmsnUrl',
+                        title: '权限地址'
+                    }, {
+                        field: 'pmsnIcon',
+                        title: '权限图标'
+                    }, {
+                        field: 'Button',
+                        title: '操作',
+                        events: operateEvents, //给按钮注册事件
+                        formatter: AddFunctionAlty //表格中增加按钮
                     }
-                });
-            }
-        });
-    })
+                ],
+                treeShowField: 'name',
+                parentIdField: 'pid',
+                onLoadSuccess: function (data) {
+                    $table.treegrid({
+                        initialState: 'collapsed',//收缩
+                        treeColumn: 1,//指明第几列数据改为树形
+                        expanderExpandedClass: 'glyphicon treegrid-expander-expanded',
+                        expanderCollapsedClass: 'glyphicon treegrid-expander-collapsed',
+                        onChange: function () {
+                            $table.bootstrapTable('resetWidth');
+                        }
+                    });
+                }
+            });
+        })
 
-    /**
-     * @return {string}
-     */
-    function AddFunctionAlty(value, row, index) {
-        return [
-            '<button id="TableEditor" class="btn btn-info btn-link btn-icon btn-sm edit">编辑</button>&nbsp;&nbsp;',
-            '<button id="TableSon" class="btn btn-warning btn-link btn-icon btn-sm like">添加</button>&nbsp;&nbsp;',
-            '<button id="TableDelete" class="btn btn-danger btn-link btn-icon btn-sm remove">删除</button>'
-        ].join("");
-    }
-
-    window.operateEvents = {
-        "click #TableEditor": function (e, value, row, index) {
-            //编辑按钮事件
-        },
-        "click #TableSon": function () {
-            //编辑按钮事件
-        },
-        "click #TableDelete": function () {
-            $(this).parent().parent().remove();
+        /**
+         * @return {string}
+         */
+        function AddFunctionAlty(value, row, index) {
+            return [
+                '<button id="TableEditor" class="btn btn-info btn-link btn-icon btn-sm edit">编辑</button>&nbsp;&nbsp;',
+                '<button id="TableSon" class="btn btn-warning btn-link btn-icon btn-sm like">添加</button>&nbsp;&nbsp;',
+                '<button id="TableDelete" class="btn btn-danger btn-link btn-icon btn-sm remove">删除</button>'
+            ].join("");
         }
-    }
 
-</script>
+        window.operateEvents = {
+            "click #TableEditor": function (e, value, row, index) {
+                //编辑按钮事件
+            },
+            "click #TableSon": function () {
+                //编辑按钮事件
+            },
+            "click #TableDelete": function () {
+                $(this).parent().parent().remove();
+            }
+        }
+    </script>
+</th:block>
 </body>
 </html>

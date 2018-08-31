@@ -7,13 +7,13 @@ import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.service.BlogArticleService;
 import net.htjs.blog.service.SysPermissionService;
 import net.htjs.blog.service.SysUserService;
-import net.htjs.blog.util.ShiroUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -61,7 +61,7 @@ public class PageController {
     }
 
     /**
-     * 后台管理首页, TODO 临时获取所有菜单，需要修改成根据当前用户获取菜单
+     * 后台管理大屏, TODO 临时获取所有菜单，需要修改成根据当前用户获取菜单
      *
      * @param
      * @return java.lang.String
@@ -69,9 +69,9 @@ public class PageController {
      * @date 2018/8/22 11:53
      */
     @GetMapping("/manage/main")
-    public String main(Model model) {
+    public String main(HttpSession session) {
         List<SysPermission> sysPermissionList = sysPermissionService.selectAllMenu();
-        model.addAttribute("sysPermissionList", sysPermissionList);
+        session.setAttribute("sysPermissionList", sysPermissionList);
         return "backend/main";
     }
 
@@ -125,8 +125,8 @@ public class PageController {
      * @date 2018/8/22 11:59
      */
     @GetMapping("/manage/system")
-    public String userInfo() {
-        return "backend/userInfo";
+    public String sysInfo() {
+        return "backend/system";
     }
 
 
@@ -179,17 +179,5 @@ public class PageController {
         return "backend/roleEdit";
     }
 
-    /**
-     * 权限编辑跳转，TODO 新增和编辑
-     *
-     * @param
-     * @return java.lang.String
-     * @author dingdongliang
-     * @date 2018/8/30 14:43
-     */
-    @GetMapping("/manage/pmsnEdit")
-    public String pmsnEdit() {
-        return "backend/pmsnEdit";
-    }
 
 }
