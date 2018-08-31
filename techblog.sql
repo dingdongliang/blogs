@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-08-23 18:01:23
+Date: 2018-08-31 18:37:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `blog_article` (
   `created` datetime DEFAULT NULL COMMENT '提交时间',
   `modifyer` varchar(32) DEFAULT NULL COMMENT '修改人',
   `lastmod` datetime DEFAULT NULL COMMENT '修改时间',
-  `status` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
+  `status` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:审批通过,W:等待审批,I:下架',
   `article_summary` varchar(255) DEFAULT NULL COMMENT '摘要',
   PRIMARY KEY (`article_id`),
   KEY `FK_article_user` (`creater`),
@@ -66,6 +66,7 @@ CREATE TABLE `sys_permission` (
   `LASTMOD` datetime DEFAULT NULL COMMENT '修改日期',
   `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
   `MODIFYER` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `PMSN_ICON` varchar(255) DEFAULT NULL COMMENT 'icon图标',
   PRIMARY KEY (`PMSN_ID`),
   UNIQUE KEY `PMSN_CODE` (`PMSN_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限表';
@@ -77,7 +78,7 @@ DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `ROLE_ID` varchar(32) NOT NULL COMMENT '角色ID',
   `ROLE_NAME` varchar(100) NOT NULL COMMENT '角色名称',
-  `ROLE_DESC` varchar(500) DEFAULT NULL COMMENT '角色描述',
+  `ROLE_CODE` varchar(500) DEFAULT NULL COMMENT '角色描述',
   `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
   `CREATED` datetime DEFAULT NULL COMMENT '创造日期',
   `LASTMOD` datetime DEFAULT NULL COMMENT '修改日期',
@@ -124,26 +125,6 @@ CREATE TABLE `sys_user` (
   `modifyer` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for sys_user_pmsn
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user_pmsn`;
-CREATE TABLE `sys_user_pmsn` (
-  `UPM_ID` varchar(32) NOT NULL COMMENT '用户权限配置ID',
-  `USER_ID` varchar(32) NOT NULL COMMENT '用户ID',
-  `PMSN_ID` varchar(32) NOT NULL COMMENT '权限ID',
-  `STATUS` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:有效的,I:无效的',
-  `CREATED` datetime DEFAULT NULL COMMENT '创造日期',
-  `LASTMOD` datetime DEFAULT NULL COMMENT '修改日期',
-  `CREATER` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `MODIFYER` varchar(32) DEFAULT NULL COMMENT '修改人',
-  PRIMARY KEY (`UPM_ID`),
-  KEY `FK_UPM_USER` (`USER_ID`),
-  KEY `FK_UPM_PMSN` (`PMSN_ID`),
-  CONSTRAINT `sys_user_pmsn_ibfk_1` FOREIGN KEY (`PMSN_ID`) REFERENCES `sys_permission` (`PMSN_ID`),
-  CONSTRAINT `sys_user_pmsn_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `sys_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户权限表';
 
 -- ----------------------------
 -- Table structure for sys_user_role
