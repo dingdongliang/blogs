@@ -54,7 +54,7 @@
                                             <td th:text="${sysUser.status}"></td>
                                             <td>
                                                 <a th:href="@{'/role/'+${sysUser.userId}}"
-                                                   class=" btn-info btn-link like"
+                                                   class=" btn-info btn-link edit"
                                                    data-toggle="modal" data-target="#userRole">赋予角色</a>
                                                 <a th:href="@{'/user/'+${sysUser.userId}}"
                                                    class=" btn-danger btn-link  remove">禁用</a>
@@ -117,15 +117,9 @@
                         <h5 class="modal-title">用户角色分配</h5>
                         <input type="hidden" id="userId" value="">
                     </div>
-                    <div class="modal-body" th:each="sysRole:${sysRoleList}">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="roleList"
-                                       value="${sysRole.roleId}"
-                                       th:text="${sysRole.roleName}">
-                                <span class="form-check-sign"></span>
-                            </label>
-                        </div>
+                    <div class="modal-body" id="roleList" th:each="sysRole:${sysRoleList}">
+                        <input class="form-check-input" type="checkbox" name="roleList" value=""
+                               th:text="${sysRole.roleName}" th:attr="value=${sysRole.roleId}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -139,15 +133,7 @@
 <th:block layout:fragment="bodyAssets">
     <script>
         $(function () {
-
             var table = $('#datatable').DataTable();
-
-            table.on('click', '.edit', function () {
-                $tr = $(this).closest('tr');
-
-                var data = table.row($tr).data();
-                alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
-            });
 
             table.on('click', '.remove', function (e) {
                 $tr = $(this).closest('tr');
@@ -155,18 +141,24 @@
                 e.preventDefault();
             });
 
-            table.on('click', '.like', function () {
+            table.on('click', '.edit', function () {
+                $tr = $(this).closest('tr');
                 var data = table.row($tr).data();
                 $("#userId").val(data[0]);
             });
 
             $("#submitRole").click(function () {
+
+                var arr = new Array();
+                $("#roleList input[type='checkbox']").prop("checked", function (i, val) {
+                    if (val) arr.push($(this).val());
+                });
+
                 $.ajax({
-                    url: "/user/addUser",
+                    url: "/user/setUserRole",
                     data: {
-                        "userName": $("#userName").val(),
-                        "account": $("#account").val(),
-                        "phone": $("#phone").val()
+                        "userId": $("#userId").val(),
+                        "roles": arr.join(",")
                     },
                     type: "POST",
                     dataType: "json",
@@ -178,8 +170,11 @@
                             type: 'success',
                             timer: 10
                         });
+                        $('#userRole').modal('hide');
                     }
                 });
+
+
             });
 
             $("#submit").click(function () {

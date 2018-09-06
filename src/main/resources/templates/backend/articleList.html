@@ -54,11 +54,11 @@
                                             <td th:text="${blogArticle.sortId}"></td>
                                             <td th:text="${blogArticle.creater}"></td>
                                             <td th:text="${blogArticle.created}"></td>
-                                            <td class="text-right">
+                                            <td>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn-info btn-link like">编辑</a>
+                                                   class="btn-info btn-link like">修改</a>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn-warning btn-link edit">审批</a>
+                                                   class="btn-primary btn-link edit">审批</a>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
                                                    class="btn-danger btn-link remove">下架</a>
                                             </td>

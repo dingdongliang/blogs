@@ -18,7 +18,7 @@ import java.util.List;
 public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Autowired
-    private BaseMapper<T> baseMapper;
+    protected BaseMapper<T> baseMapper;
 
     /**
      * 根据id查询实体

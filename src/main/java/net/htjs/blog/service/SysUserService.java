@@ -30,7 +30,7 @@ public interface SysUserService extends BaseService<SysUser> {
      * @author dingdongliang
      * @date 2018/4/24 8:33
      */
-    void putRoleToUser(String userId, String[] roleIds);
+    void putRoleToUser(String userId, String roleIds);
 
     /**
      * 更新用户的角色
@@ -52,7 +52,7 @@ public interface SysUserService extends BaseService<SysUser> {
      * @author dingdongliang
      * @date 2018/4/24 11:13
      */
-    void insert(SysUser sysUser, String[] roleIds);
+    void insert(SysUser sysUser, String roleIds);
 
     /**
      * 修改用户，同时修改用户-角色映射

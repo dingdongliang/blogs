@@ -80,6 +80,19 @@ public class UserController {
         return ResponseData.success();
     }
 
+    @PostMapping("/setUserRole")
+    public ResponseData setUserRole(@RequestParam("userId") String userId, @RequestParam("roles") String roles) {
+
+        if (null != roles && !"".equals(roles)) {
+            sysUserService.putRoleToUser(userId, roles);
+            return ResponseData.success();
+        } else {
+            return ResponseData.error(false, "角色不能为空");
+        }
+
+    }
+
+
     /**
      * 更新用户，状态全部为E
      *
