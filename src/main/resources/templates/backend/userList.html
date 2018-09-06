@@ -11,57 +11,53 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="/manage/userEdit" class="btn btn-primary btn-lg" role="button"
-                       aria-disabled="false">新增用户</a>
+                    <a href="javascript:void(0)" class="btn btn-primary btn-lg" role="button"
+                       aria-disabled="false" data-toggle="modal" data-target="#userEdit">新增用户</a>
                 </div>
                 <div class="card-body">
                     <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
                                 <table id="datatable"
-                                       class="table table-striped table-bordered dataTable dtr-inline"
-                                       cellspacing="0" width="100%" role="grid"
-                                       aria-describedby="datatable_info" style="width: 100%;">
+                                       class="table table-striped table-bordered dataTable dtr-inline text-md-center"
+                                       cellspacing="0" width="100%" role="grid">
                                     <thead>
                                     <tr role="row">
+                                        <th class="disabled-sorting sorting" tabindex="0" aria-controls="datatable"
+                                            rowspan="1">ID
+                                        </th>
                                         <th class="sorting_asc" tabindex="0" aria-controls="datatable"
-                                            rowspan="1" colspan="1" style="width: 215px;" aria-sort="ascending"
-                                            aria-label="Name: activate to sort column descending">姓名
+                                            rowspan="1" colspan="1" aria-sort="ascending">姓名
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                            colspan="1" style="width: 327px;"
-                                            aria-label="Account: activate to sort column ascending">账号
+                                            colspan="1">账号
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                            colspan="1" style="width: 155px;"
-                                            aria-label="Phone: activate to sort column ascending">电话
+                                            colspan="1">电话
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                            colspan="1" style="width: 92px;"
-                                            aria-label="Status: activate to sort column ascending">状态
+                                            colspan="1">状态
                                         </th>
-                                        <th class="disabled-sorting text-right sorting" tabindex="0"
-                                            aria-controls="datatable" rowspan="1" colspan="1"
-                                            style="width: 184px;"
-                                            aria-label="Operate: activate to sort column ascending">操作
+                                        <th class="disabled-sorting sorting" tabindex="0"
+                                            aria-controls="datatable" rowspan="1" colspan="1">操作
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <div th:each="sysUser:${sysUserList}">
-                                        <tr role="row" class="even">
+                                        <tr role="row">
+                                            <td th:text="${sysUser.userId}"></td>
                                             <td tabindex="0" class="sorting_1"
                                                 th:text="${sysUser.userName}"></td>
                                             <td th:text="${sysUser.account}"></td>
                                             <td th:text="${sysUser.phone}"></td>
                                             <td th:text="${sysUser.status}"></td>
-                                            <td class="text-right">
+                                            <td>
                                                 <a th:href="@{'/role/'+${sysUser.userId}}"
-                                                   class="btn btn-info btn-link btn-icon btn-sm like">角色</a>
+                                                   class=" btn-info btn-link like"
+                                                   data-toggle="modal" data-target="#userRole">赋予角色</a>
                                                 <a th:href="@{'/user/'+${sysUser.userId}}"
-                                                   class="btn btn-warning btn-link btn-icon btn-sm edit">重置</a>
-                                                <a th:href="@{'/user/'+${sysUser.userId}}"
-                                                   class="btn btn-danger btn-link btn-icon btn-sm remove">禁用</a>
+                                                   class=" btn-danger btn-link  remove">禁用</a>
                                             </td>
                                         </tr>
                                     </div>
@@ -73,11 +69,76 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="userEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title" id="exampleModalLabel">用户编辑</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-caps-small"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="userName" placeholder="请输入真实姓名">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-lock-circle-open"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="account" placeholder="请输入账号">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-air-baloon"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="phone" placeholder="请输入联系电话号码">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="userRole" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h5 class="modal-title">用户角色分配</h5>
+                        <input type="hidden" id="userId" value="">
+                    </div>
+                    <div class="modal-body" th:each="sysRole:${sysRoleList}">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="roleList"
+                                       value="${sysRole.roleId}"
+                                       th:text="${sysRole.roleName}">
+                                <span class="form-check-sign"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="submitRole">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <th:block layout:fragment="bodyAssets">
     <script>
-        $(document).ready(function () {
+        $(function () {
 
             var table = $('#datatable').DataTable();
 
@@ -95,7 +156,52 @@
             });
 
             table.on('click', '.like', function () {
-                alert('赋予角色');
+                var data = table.row($tr).data();
+                $("#userId").val(data[0]);
+            });
+
+            $("#submitRole").click(function () {
+                $.ajax({
+                    url: "/user/addUser",
+                    data: {
+                        "userName": $("#userName").val(),
+                        "account": $("#account").val(),
+                        "phone": $("#phone").val()
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                    }
+                });
+            });
+
+            $("#submit").click(function () {
+                $.ajax({
+                    url: "/user/addUser",
+                    data: {
+                        "userName": $("#userName").val(),
+                        "account": $("#account").val(),
+                        "phone": $("#phone").val()
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                    }
+                });
             });
         });
     </script>

@@ -17,7 +17,7 @@
                        aria-disabled="false" data-toggle="modal" data-target="#pmsnEdit">新增权限菜单</a>
                 </div>
                 <div class="card-body">
-                    <table id="table"></table>
+                    <table id="table" class="text-md-center"></table>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title" id="exampleModalLabel">新增权限表单</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">权限菜单编辑</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-row">
@@ -104,13 +104,17 @@
                     <div class="form-group">
                         <select id="pmsnIcon" class="form-control">
                             <option selected>选择权限ICON</option>
-                            <option>...</option>
+                            <option value="nc-trophy"><span class="input-group-text"><i class="nc nc-trophy"></i></span>nc-trophy</option>
+                            <option value="nc-tv-2">nc-tv-2</option>
+                            <option value="nc-zoom-split">nc-zoom-split</option>
+                            <option value="nc-tap-01">nc-tap-01</option>
+                            <option value="nc-pin-3">nc-pin-3</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary" id="submit">提交</button>
                 </div>
             </div>
         </div>
@@ -173,6 +177,29 @@
                     });
                 }
             });
+
+
+            $("#submit").click(function () {
+                $.ajax({
+                    url: "/user/addUser",
+                    data: {
+                        "userName": $("#userName").val(),
+                        "account": $("#account").val(),
+                        "phone": $("#phone").val()
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                    }
+                });
+            });
         })
 
         /**
@@ -180,18 +207,18 @@
          */
         function AddFunctionAlty(value, row, index) {
             return [
-                '<button id="TableEditor" class="btn btn-info btn-link btn-icon btn-sm edit">编辑</button>&nbsp;&nbsp;',
-                '<button id="TableSon" class="btn btn-warning btn-link btn-icon btn-sm like">添加</button>&nbsp;&nbsp;',
-                '<button id="TableDelete" class="btn btn-danger btn-link btn-icon btn-sm remove">删除</button>'
+                '<button id="TableEditor" class="btn-info btn-link edit" data-toggle="modal" data-target="#pmsnEdit">编辑</button>&nbsp;&nbsp;',
+                '<button id="TableSon" class="btn-warning btn-link like" data-toggle="modal" data-target="#pmsnEdit">添加</button>&nbsp;&nbsp;',
+                '<button id="TableDelete" class="btn-danger btn-link remove">删除</button>'
             ].join("");
         }
 
         window.operateEvents = {
             "click #TableEditor": function (e, value, row, index) {
-                //编辑按钮事件
+                //编辑按钮事件，主要是给模态框赋值，需要编辑的各项文本
             },
             "click #TableSon": function () {
-                //编辑按钮事件
+                //编辑按钮事件，主要是给模态框赋值，父类ID
             },
             "click #TableDelete": function () {
                 $(this).parent().parent().remove();

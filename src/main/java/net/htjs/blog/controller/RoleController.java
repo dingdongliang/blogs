@@ -61,27 +61,17 @@ public class RoleController {
      * @author dingdongliang
      * @date 2018/4/18 16:09
      */
-    @RequiresPermissions("role:add")
+
     @PostMapping("/addRole")
-    public ResponseData addRole(@ApiParam(name = "requestJson",
-            value = "格式为{\"roleName\":\"监督者\",\"permissions\":" +
-                    "\"2e0b4be914de494d99236f7d5141804a|6b12817ab5b943e1b4d4218617dd3ca3\"}", required = true)
-                                @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "roleName,permissions");
+    public ResponseData addRole(SysRole sysRole) throws GlobalException {
 
-        String roleName = requestJson.getString("roleName");
-        String permissions = requestJson.getString("permissions");
-
-        String[] pmsnIds = permissions.split("\\|");
-
-        SysRole sysRole = new SysRole();
         String roleId = StringUtil.getUUID();
+
         sysRole.setRoleId(roleId);
-        sysRole.setRoleName(roleName);
 
         BaseDomain.createLog(sysRole);
 
-        sysRoleService.insert(sysRole, pmsnIds);
+        sysRoleService.insert(sysRole);
 
         return ResponseData.success();
     }

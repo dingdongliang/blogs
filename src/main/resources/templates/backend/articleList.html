@@ -25,44 +25,42 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <table id="datatable"
-                                       class="table table-striped table-bordered dataTable dtr-inline"
-                                       cellspacing="0" width="100%" role="grid"
-                                       aria-describedby="datatable_info" style="width: 100%;">
+                                       class="table table-striped table-bordered dataTable dtr-inline text-md-center"
+                                       cellspacing="0" width="100%" role="grid">
                                     <thead>
                                     <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable"
-                                            rowspan="1" colspan="1" style="width: 542px;" aria-sort="ascending"
-                                            aria-label="Name: activate to sort column descending">标题
+                                        <th class="disabled-sorting sorting" tabindex="0"
+                                            aria-controls="datatable" rowspan="1" colspan="1">标题
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                            colspan="1" style="width: 155px;"
-                                            aria-label="Office: activate to sort column ascending">分类
+                                            colspan="1">分类
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                            colspan="1" style="width: 92px;"
-                                            aria-label="Age: activate to sort column ascending">作者
+                                        <th class="disabled-sorting sorting" tabindex="0" aria-controls="datatable"
+                                            rowspan="1" colspan="1">作者
                                         </th>
-                                        <th class="disabled-sorting text-right sorting" tabindex="0"
-                                            aria-controls="datatable" rowspan="1" colspan="1"
-                                            style="width: 184px;"
-                                            aria-label="Actions: activate to sort column ascending">操作
+                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1"
+                                            colspan="1">录入时间
+                                        </th>
+                                        <th class="disabled-sorting sorting" tabindex="0"
+                                            aria-controls="datatable" rowspan="1" colspan="1">操作
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <div th:each="blogArticle:${blogArticleList}">
-                                        <tr role="row" class="odd">
-                                            <td tabindex="0" class="sorting_1"
+                                        <tr role="row" class="odd ">
+                                            <td tabindex="0" class="sorting_1 text-md-left"
                                                 th:text="${blogArticle.articleTitle}"></td>
                                             <td th:text="${blogArticle.sortId}"></td>
                                             <td th:text="${blogArticle.creater}"></td>
+                                            <td th:text="${blogArticle.created}"></td>
                                             <td class="text-right">
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn btn-info btn-link btn-icon btn-sm like">编辑</a>
+                                                   class="btn-info btn-link like">编辑</a>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn btn-warning btn-link btn-icon btn-sm edit">审批</a>
+                                                   class="btn-warning btn-link edit">审批</a>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn btn-danger btn-link btn-icon btn-sm remove">下架</a>
+                                                   class="btn-danger btn-link remove">下架</a>
                                             </td>
                                         </tr>
                                     </div>
@@ -78,7 +76,7 @@
 </div>
 <th:block layout:fragment="bodyAssets">
     <script>
-        $(document).ready(function () {
+        $(function () {
 
             var table = $('#datatable').DataTable();
 

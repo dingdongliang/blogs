@@ -3,9 +3,11 @@ package net.htjs.blog.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.entity.BlogArticle;
 import net.htjs.blog.entity.SysPermission;
+import net.htjs.blog.entity.SysRole;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.service.BlogArticleService;
 import net.htjs.blog.service.SysPermissionService;
+import net.htjs.blog.service.SysRoleService;
 import net.htjs.blog.service.SysUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ public class PageController {
 
     @Resource
     private SysUserService sysUserService;
+    @Resource
+    private SysRoleService sysRoleService;
     @Resource
     private BlogArticleService blogArticleService;
     @Resource
@@ -86,7 +90,11 @@ public class PageController {
     @RequestMapping("/manage/user")
     public String user(Model model) {
         List<SysUser> sysUserList = sysUserService.selectAll();
+        List<SysRole> sysRoleList = sysRoleService.selectAll();
+
         model.addAttribute("sysUserList", sysUserList);
+        model.addAttribute("sysRoleList", sysRoleList);
+
         return "backend/userList";
     }
 
@@ -99,7 +107,9 @@ public class PageController {
      * @date 2018/8/22 11:53
      */
     @GetMapping("/manage/role")
-    public String role() {
+    public String role(Model model) {
+        List<SysRole> sysRoleList = sysRoleService.selectAll();
+        model.addAttribute("sysRoleList", sysRoleList);
         return "backend/roleList";
     }
 
@@ -152,32 +162,4 @@ public class PageController {
     public String articleEdit() {
         return "backend/articleEdit";
     }
-
-    /**
-     * 用户编辑跳转，TODO 新增和编辑
-     *
-     * @param
-     * @return java.lang.String
-     * @author dingdongliang
-     * @date 2018/8/30 14:42
-     */
-    @GetMapping("/manage/userEdit")
-    public String userEdit() {
-        return "backend/userEdit";
-    }
-
-    /**
-     * 角色编辑跳转，TODO 新增和编辑
-     *
-     * @param
-     * @return java.lang.String
-     * @author dingdongliang
-     * @date 2018/8/30 14:43
-     */
-    @GetMapping("/manage/roleEdit")
-    public String roleEdit() {
-        return "backend/roleEdit";
-    }
-
-
 }
