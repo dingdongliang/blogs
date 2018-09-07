@@ -53,11 +53,10 @@
                                             <td th:text="${sysUser.phone}"></td>
                                             <td th:text="${sysUser.status}"></td>
                                             <td>
-                                                <a th:href="@{'/role/'+${sysUser.userId}}"
-                                                   class=" btn-info btn-link edit"
+                                                <a href="javascript:void(0)" class=" btn-info btn-link like"
                                                    data-toggle="modal" data-target="#userRole">赋予角色</a>
-                                                <a th:href="@{'/user/'+${sysUser.userId}}"
-                                                   class=" btn-danger btn-link  remove">禁用</a>
+                                                <a href="javascript:void(0)" class=" btn-warning btn-link edit">修改</a>
+                                                <a href="javascript:void(0)" class=" btn-danger btn-link remove">禁用</a>
                                             </td>
                                         </tr>
                                     </div>
@@ -84,6 +83,7 @@
                             <div class="input-group-prepend"><span class="input-group-text">
                             <i class="nc-icon nc-caps-small"></i></span>
                             </div>
+                            <input type="hidden" id="userEditId">
                             <input type="text" class="form-control" id="userName" placeholder="请输入真实姓名">
                         </div>
                         <div class="input-group">
@@ -137,14 +137,46 @@
 
             table.on('click', '.remove', function (e) {
                 $tr = $(this).closest('tr');
-                table.row($tr).remove().draw();
-                e.preventDefault();
+                var data = table.row($tr).data();
+                $.ajax({
+                    url: "/user/delUser",
+                    data: {
+                        "userId": data[0]
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function () {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                        table.row($tr).remove().draw();
+                        e.preventDefault();
+                        window.location.reload();
+                    }
+                });
+            });
+
+            table.on('click', '.like', function () {
+                $tr = $(this).closest('tr');
+                var data = table.row($tr).data();
+                $("#userId").val(data[0]);
+
+                //TODO 同时获取该用户ID的现有角色，默认选中
             });
 
             table.on('click', '.edit', function () {
                 $tr = $(this).closest('tr');
                 var data = table.row($tr).data();
-                $("#userId").val(data[0]);
+                $('#userEdit').modal('show');
+
+                $("#userEditId").val(data[0]);
+                $("#userName").val(data[1]);
+                $("#account").val(data[2]);
+                $("#phone").val(data[3]);
             });
 
             $("#submitRole").click(function () {
@@ -179,11 +211,12 @@
 
             $("#submit").click(function () {
                 $.ajax({
-                    url: "/user/addUser",
+                    url: "/user/saveOrUpdateUser",
                     data: {
                         "userName": $("#userName").val(),
                         "account": $("#account").val(),
-                        "phone": $("#phone").val()
+                        "phone": $("#phone").val(),
+                        "userId":$("#userEditId").val()
                     },
                     type: "POST",
                     dataType: "json",
@@ -195,6 +228,9 @@
                             type: 'success',
                             timer: 10
                         });
+                        $("#userEditId").val("");
+                        $('#userEdit').modal('hide');
+                        window.location.reload();
                     }
                 });
             });

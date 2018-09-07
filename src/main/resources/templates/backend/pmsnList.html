@@ -181,7 +181,7 @@
 
             $("#submit").click(function () {
                 $.ajax({
-                    url: "/user/addUser",
+                    url: "/user/saveOrUpdateUser",
                     data: {
                         "userName": $("#userName").val(),
                         "account": $("#account").val(),

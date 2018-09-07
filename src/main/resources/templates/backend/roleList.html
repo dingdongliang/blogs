@@ -4,6 +4,8 @@
 <head>
     <title>航天金穗研发部技术拾遗-角色管理</title>
     <link href="/css/m-font-awesome.css" rel="stylesheet"/>
+    <link href="/css/bootstrap-treeview.min.css" rel="stylesheet"/>
+    <link href="https://cdn.bootcss.com/octicons/4.4.0/font/octicons.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="content" layout:fragment="content">
@@ -48,12 +50,12 @@
                                             <td th:text="${sysRole.status}"></td>
                                             <td th:text="${sysRole.isDefault}"></td>
                                             <td>
-                                                <a th:href="@{'/role/'+${sysRole.roleId}}"
-                                                   class="btn-info btn-link like">角色授权</a>
-                                                <a th:href="@{'/role/'+${sysRole.roleId}}"
-                                                   class="btn-warning btn-link edit">修改</a>
-                                                <a th:href="@{'/role/'+${sysRole.roleId}}"
-                                                   class="btn-danger btn-link remove">禁用</a></td>
+                                                <a href="javascript:void(0)" class="btn-info btn-link like"
+                                                   data-toggle="modal" data-target="#rolePmsn">角色授权</a>
+                                                <a href="javascript:void(0)" class="btn-warning btn-link edit"
+                                                   data-toggle="modal" data-target="#roleEdit">修改</a>
+                                                <a href="javascript:void(0)" class="btn-danger btn-link remove">禁用</a>
+                                            </td>
                                         </tr>
                                     </div>
                                     </tbody>
@@ -92,7 +94,7 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="isDefault" type="checkbox">
+                                    <input class="form-check-input" id="setDefault" type="checkbox">
                                     是否默认角色
                                     <span class="form-check-sign">
                                     <span class="check" id="check"></span>
@@ -109,8 +111,29 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="rolePmsn" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">角色权限分配</h5>
+                    <input type="hidden" id="roleId" value="">
+                </div>
+                <div class="modal-body">
+                    <div id="pmsnTree" style="height: 400px;overflow-y :scroll;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="submitRole">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <th:block layout:fragment="bodyAssets">
+    <script src="/js/bootstrap-treeview.min.js"></script>
     <script>
         $(function () {
             $('#datatable').DataTable({
@@ -141,14 +164,66 @@
 
             //Like record
             table.on('click', '.like', function () {
-                alert('授权');
+
+                $tr = $(this).closest('tr');
+                var data = table.row($tr).data();
+                $("#roleId").val(data[0]);
+
+                var treeData = [{
+                    text: "Parent one",
+                    nodes: [{
+                        text: "Child 1",
+                        nodes: [{
+                            text: "Grandchild 1"
+                        }, {
+                            text: "Grandchild 2",
+                            nodes: [{
+                                text: "Grandchild 2-1",
+                                nodes: [{
+                                    text: "Grandchild 2-1-1"
+                                }, {
+                                    text: "Grandchild 2-2-1",
+                                }]
+                            }, {
+                                text: "Grandchild 1-2",
+                            }]
+                        }]
+                    }, {
+                        text: "Child 2",
+                        nodes: [{
+                            text: "Grandchild 2-1"
+                        }, {
+                            text: "Grandchild 2-2",
+                        }]
+                    }]
+                }, {
+                    text: "Parent 2",
+                    id: '11111'
+                }, {
+                    text: "Parent 3"
+                }, {
+                    text: "Parent 4"
+                }, {
+                    text: "Parent 5"
+                }];
+
+
+                $('#pmsnTree').treeview({
+                    levels: 5,
+                    expandIcon: 'octicon octicon-arrow-right',
+                    collapseIcon: 'octicon octicon-arrow-right',
+                    nodeIcon: 'octicon octicon-checklist',
+                    selectedBackColor: false,
+                    selectedColor: '#337AB7',
+                    showCheckbox: 1,//这里之所以写1，是因为我引得js源码里定义1为true
+                    multiSelect: 1,//这里之所以写1，是因为我引得js源码里定义1为true
+                    data: treeData
+
+
+                });
+
             });
 
-            $("#check").toggle(function () {
-                $("#isDefault").attr('checked');
-            }, function () {
-                $("#isDefault").removeAttribute('checked');
-            });
 
             $("#submit").click(function () {
                 $.ajax({

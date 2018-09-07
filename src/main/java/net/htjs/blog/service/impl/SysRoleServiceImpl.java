@@ -33,6 +33,11 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     @Resource
     private SysRolePmsnMapper sysRolePmsnMapper;
 
+    @Override
+    public List<String> selectDefault() {
+        return sysRoleMapper.selectDefault();
+    }
+
     /**
      * 给角色赋予权限，一对多
      *

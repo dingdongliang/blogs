@@ -2,6 +2,8 @@ package net.htjs.blog.service;
 
 import net.htjs.blog.entity.SysRole;
 
+import java.util.List;
+
 /**
  * blog/net.htjs.blog.service
  *
@@ -64,6 +66,16 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @date 2018/4/25 16:24
      */
     void delete(String roleId);
+
+    /**
+     * 查询默认权限ID集合，新用户添加的时候，绑定
+     *
+     * @param
+     * @return java.util.List<String>
+     * @author dingdongliang
+     * @date 2018/9/7 8:21
+     */
+    List<String> selectDefault();
 }
 
 

@@ -30,6 +30,12 @@
         from sys_role WHERE STATUS = 'E'
     </select>
 
+    <select id="selectDefault" resultType="java.lang.String">
+        select
+        ROLE_ID
+        from sys_role WHERE STATUS = 'E' and IS_DEFAULT='Y'
+    </select>
+
     <update id="deleteByPrimaryKey" parameterType="java.lang.String">
         update sys_role set STATUS ='I'
         WHERE ROLE_ID = #{roleId,jdbcType=VARCHAR}

@@ -65,5 +65,24 @@ public interface SysUserService extends BaseService<SysUser> {
      */
     void update(SysUser sysUser, String[] roleIds);
 
+    /**
+     * 禁用用户
+     *
+     * @param userId
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/7 9:39
+     */
+    boolean delUser(String userId);
+
+
+    /**
+     * 持久化用户信息
+     * param user
+     * return
+     */
+    boolean persistenceUser(SysUser sysUser);
+
+
 }
 

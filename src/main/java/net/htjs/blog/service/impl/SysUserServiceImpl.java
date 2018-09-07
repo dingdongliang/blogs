@@ -1,15 +1,16 @@
 package net.htjs.blog.service.impl;
 
-import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.constant.SystemConstant;
+import net.htjs.blog.dao.SysRoleMapper;
 import net.htjs.blog.dao.SysUserMapper;
 import net.htjs.blog.dao.SysUserRoleMapper;
 import net.htjs.blog.entity.BaseDomain;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.entity.SysUserRole;
 import net.htjs.blog.service.SysUserService;
-import net.htjs.blog.util.ShiroUtil;
+import net.htjs.blog.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     private SysUserMapper sysUserMapper;
     @Resource
     private SysUserRoleMapper sysUserRoleMapper;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     /**
      * 根据用户名和密码查询对应的用户, 用于登录认证
@@ -69,22 +72,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
             //对于该对应记录来说，互斥的ID当成key处理
             map.put(sysUserRole.getRoleId(), sysUserRole);
             //设置所有记录过期
-            updUserRole(sysUserRole, SystemConstant.INVALID);
+            updateUserRole(sysUserRole, SystemConstant.INVALID);
         }
-
 
         //开始处理修改后提交的对应数据，checkedIds为权限集合
         if (null != checkedIds && !"".equals(checkedIds)) {
             String[] ids = checkedIds.split(",");
             for (String id : ids) {
-                if (StringUtil.isEmpty(id)) {
+                if (StringUtils.isBlank(id)) {
                     continue;
                 }
                 //然后看这些ID是否在map中
                 SysUserRole sysUserRole = map.get(id);
                 if (sysUserRole != null) {
                     //如果在map中，说明在数据库中有记录，把状态改成正常
-                    updUserRole(sysUserRole, SystemConstant.EFFECTIVE);
+                    updateUserRole(sysUserRole, SystemConstant.EFFECTIVE);
                 } else {
                     //如果不在msp中，说明该对应记录在数据库中没有，要新增
                     sysUserRole = new SysUserRole();
@@ -108,7 +110,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
     }
 
-    private void updUserRole(SysUserRole userRole, String status) {
+    private void updateUserRole(SysUserRole userRole, String status) {
         BaseDomain.updateLog(userRole);
         userRole.setStatus(status);
         sysUserRoleMapper.updateByPrimaryKeySelective(userRole);
@@ -191,4 +193,50 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         sysUserMapper.updateByPrimaryKey(sysUser);
         updateRoleToUser(sysUser.getUserId(), roleIds);
     }
+
+    /**
+     * 禁用用户
+     *
+     * @param userId
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/7 9:39
+     */
+    @Override
+    public boolean delUser(String userId) {
+        //删除用户角色映射
+        List<SysUserRole> urList = sysUserRoleMapper.selectByUserId(userId);
+        for (SysUserRole sysUserRole : urList) {
+            sysUserRoleMapper.deleteByPrimaryKey(sysUserRole.getUrId());
+        }
+
+        //删除用户
+        SysUser user = baseMapper.selectByPrimaryKey(userId);
+        user.setStatus(SystemConstant.INVALID);
+        return baseMapper.updateByPrimaryKey(user) > 0;
+
+    }
+
+
+    @Override
+    public boolean persistenceUser(SysUser sysUser) {
+
+        if (StringUtils.isBlank(sysUser.getUserId())) {
+            sysUser.setUserPwd(net.htjs.blog.util.StringUtil.encryptPassword(SystemConstant.DEFAULT_CREDENTIAL, sysUser.getAccount()));
+
+            sysUser.setUserId(StringUtil.getUUID());
+            BaseDomain.createLog(sysUser);
+
+            //查询默认权限
+            List<String> sysRoleList = sysRoleMapper.selectDefault();
+
+            insert(sysUser, StringUtils.join(sysRoleList, ","));
+
+        } else {
+            BaseDomain.updateLog(sysUser);
+            updateByPrimaryKeySelective(sysUser);
+        }
+        return true;
+    }
+
 }

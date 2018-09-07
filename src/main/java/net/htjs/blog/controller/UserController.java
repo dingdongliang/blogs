@@ -1,13 +1,9 @@
 package net.htjs.blog.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import net.htjs.blog.constant.SystemConstant;
-import net.htjs.blog.entity.BaseDomain;
-import net.htjs.blog.entity.BlogArticle;
 import net.htjs.blog.entity.SysRole;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.exception.GlobalException;
@@ -15,7 +11,6 @@ import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.SysRoleService;
 import net.htjs.blog.service.SysUserService;
 import net.htjs.blog.util.JsonUtil;
-import net.htjs.blog.util.StringUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
@@ -41,22 +36,6 @@ public class UserController {
     @Resource
     private SysRoleService sysRoleService;
 
-    /**
-     * 查询用户列表，带分页
-     *
-     * @return net.htjs.blog.exception.ResponseData
-     * @author dingdongliang
-     * @date 2018/4/18 16:10
-     */
-    @RequiresPermissions("user:list")
-    @GetMapping("/userList")
-    public ResponseData userList(@ApiParam(name = "requestJson", value = "格式为{\"pageNo\":\"1\"}", required = true)
-                                 @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "pageNo");
-        int pageNo = Integer.parseInt(requestJson.getString("pageNo"));
-        PageInfo<SysUser> sysUserPageInfo = sysUserService.selectPageByAll(pageNo, SystemConstant.PAGE_SIZE);
-        return ResponseData.success(sysUserPageInfo);
-    }
 
     /**
      * 添加用户
@@ -66,16 +45,10 @@ public class UserController {
      * @author dingdongliang
      * @date 2018/8/23 15:51
      */
-    @RequiresPermissions("user:add")
-    @PostMapping("/addUser")
-    public ResponseData addUser(SysUser sysUser) {
+    @PostMapping("/saveOrUpdateUser")
+    public ResponseData saveOrUpdateUser(SysUser sysUser) {
 
-        sysUser.setUserId(StringUtil.getUUID());
-        sysUser.setUserPwd(StringUtil.encryptPassword(SystemConstant.DEFAULT_CREDENTIAL, sysUser.getAccount()));
-
-        BaseDomain.createLog(sysUser);
-
-        sysUserService.insert(sysUser);
+        sysUserService.persistenceUser(sysUser);
 
         return ResponseData.success();
     }
@@ -133,5 +106,16 @@ public class UserController {
     public ResponseData getAllRole() {
         List<SysRole> list = sysRoleService.selectAll();
         return ResponseData.success(list);
+    }
+
+    @PostMapping(value = "/delUser", produces = "application/json;charset=utf-8")
+    public ResponseData delUser(@RequestParam("userId") String userId) {
+
+        boolean flag = sysUserService.delUser(userId);
+        if (flag) {
+            return ResponseData.success();
+        } else {
+            return ResponseData.error(false, "删除失败");
+        }
     }
 }
