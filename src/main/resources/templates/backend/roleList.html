@@ -26,6 +26,9 @@
                                     <thead>
                                     <tr role="row">
                                         <th class="disabled-sorting sorting" tabindex="0" aria-controls="datatable"
+                                            rowspan="1" colspan="1">角色ID
+                                        </th>
+                                        <th class="disabled-sorting sorting" tabindex="0" aria-controls="datatable"
                                             rowspan="1" colspan="1">角色名称
                                         </th>
                                         <th class="disabled-sorting sorting" tabindex="0" aria-controls="datatable"
@@ -45,6 +48,7 @@
                                     <tbody>
                                     <div th:each="sysRole:${sysRoleList}">
                                         <tr role="row">
+                                            <td th:text="${sysRole.roleId}"></td>
                                             <td tabindex="0" class="sorting_1" th:text="${sysRole.roleName}"></td>
                                             <td th:text="${sysRole.roleCode}"></td>
                                             <td th:text="${sysRole.status}"></td>
@@ -82,6 +86,7 @@
                         <div class="input-group-prepend"><span class="input-group-text">
                             <i class="nc-icon nc-caps-small"></i></span>
                         </div>
+                        <input type="hidden" id="roleEditId">
                         <input type="text" class="form-control" id="roleName" placeholder="这里输入角色名称">
                     </div>
                     <div class="input-group">
@@ -94,10 +99,10 @@
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" id="setDefault" type="checkbox">
+                                    <input class="form-check-input" id="isDefault" type="checkbox">
                                     是否默认角色
                                     <span class="form-check-sign">
-                                    <span class="check" id="check"></span>
+                                    <span class="check"></span>
                                 </span>
                                 </label>
                             </div>
@@ -149,10 +154,21 @@
 
             // Edit record
             table.on('click', '.edit', function () {
-                $tr = $(this).closest('tr');
 
+                $tr = $(this).closest('tr');
                 var data = table.row($tr).data();
-                alert('You press on Row: ' + data[0] + ' ' + data[1] + ' ' + data[2] + '\'s row.');
+                $('#roleEdit').modal('show');
+
+                $("#roleEditId").val(data[0]);
+                $("#roleName").val(data[1]);
+                $("#roleCode").val(data[2]);
+
+                //TODO 这里的Y-N-Y有错误
+                if ('Y' === data[4]) {
+                    $("#isDefault").attr('checked', true);
+                } else {
+                    $("#isDefault").attr('checked', false);
+                }
             });
 
             // Delete a record
@@ -169,61 +185,54 @@
                 var data = table.row($tr).data();
                 $("#roleId").val(data[0]);
 
-                var treeData = [{
-                    text: "Parent one",
-                    nodes: [{
-                        text: "Child 1",
-                        nodes: [{
-                            text: "Grandchild 1"
-                        }, {
-                            text: "Grandchild 2",
-                            nodes: [{
-                                text: "Grandchild 2-1",
-                                nodes: [{
-                                    text: "Grandchild 2-1-1"
-                                }, {
-                                    text: "Grandchild 2-2-1",
-                                }]
-                            }, {
-                                text: "Grandchild 1-2",
-                            }]
-                        }]
-                    }, {
-                        text: "Child 2",
-                        nodes: [{
-                            text: "Grandchild 2-1"
-                        }, {
-                            text: "Grandchild 2-2",
-                        }]
-                    }]
-                }, {
-                    text: "Parent 2",
-                    id: '11111'
-                }, {
-                    text: "Parent 3"
-                }, {
-                    text: "Parent 4"
-                }, {
-                    text: "Parent 5"
-                }];
-
-
-                $('#pmsnTree').treeview({
-                    levels: 5,
-                    expandIcon: 'octicon octicon-arrow-right',
-                    collapseIcon: 'octicon octicon-arrow-right',
-                    nodeIcon: 'octicon octicon-checklist',
-                    selectedBackColor: false,
-                    selectedColor: '#337AB7',
-                    showCheckbox: 1,//这里之所以写1，是因为我引得js源码里定义1为true
-                    multiSelect: 1,//这里之所以写1，是因为我引得js源码里定义1为true
-                    data: treeData
-
-
+                $.ajax({
+                    url: "/pmsn/setPmsn",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (msg) {
+                        $('#pmsnTree').treeview({
+                            levels: 5,
+                            expandIcon: 'octicon octicon-chevron-right',
+                            collapseIcon: 'octicon octicon-chevron-down',
+                            selectedBackColor: false,
+                            selectedColor: '#FF0000',
+                            showCheckbox: true,
+                            multiSelect: true,
+                            data: msg
+                        });
+                    }
                 });
-
             });
 
+            $("#submitRole").click(function () {
+                var pmsnIdList = $('#pmsnTree').treeview('getSelected');
+
+                var arrayObj = new Array();
+
+                for (var i in pmsnIdList) {
+                    arrayObj.push(pmsnIdList[i].id);
+                }
+
+                $.ajax({
+                    url: "/role/savePermission",
+                    data: {
+                        "roleId": $("#roleId").val(),
+                        "pmsnIds": arrayObj.toString()
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                        $('#rolePmsn').modal('hide');
+                    }
+                });
+            });
 
             $("#submit").click(function () {
                 $.ajax({

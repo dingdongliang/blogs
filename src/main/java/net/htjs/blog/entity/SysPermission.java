@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+
 /**
  * blog/net.htjs.blog.entity
  *
@@ -37,5 +39,7 @@ public class SysPermission extends BaseDomain {
     private String pmsnDesc;
 
     private String required = "N";
+
+    private List<SysPermission> nodes;
 
 }

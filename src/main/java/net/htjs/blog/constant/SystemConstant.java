@@ -98,4 +98,10 @@ public class SystemConstant {
      * 默认密码
      */
     public static final String DEFAULT_CREDENTIAL = "111111";
+
+    /**
+     * 是否叶节点，open为是，closed为否
+     */
+    public static final String TREE_STATUS_OPEN = "open";
+    public static final String TREE_STATUS_CLOSED = "closed";
 }

@@ -76,6 +76,17 @@ public interface SysRoleService extends BaseService<SysRole> {
      * @date 2018/9/7 8:21
      */
     List<String> selectDefault();
+
+
+    /**
+     * 保存分配角色权限
+     * @param roleId 角色id
+     * @param pmsnIds 菜单权限ID集合
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/12 19:57
+     */
+    boolean savePermission(String roleId, String pmsnIds);
 }
 
 

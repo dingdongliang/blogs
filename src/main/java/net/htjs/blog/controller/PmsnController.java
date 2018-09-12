@@ -4,18 +4,21 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import net.htjs.blog.constant.SystemConstant;
 import net.htjs.blog.entity.BaseDomain;
 import net.htjs.blog.entity.SysPermission;
 import net.htjs.blog.exception.GlobalException;
 import net.htjs.blog.exception.ResponseData;
+import net.htjs.blog.constant.TreeModel;
 import net.htjs.blog.service.SysPermissionService;
 import net.htjs.blog.util.JsonUtil;
 import net.htjs.blog.util.StringUtil;
-import org.apache.shiro.authz.annotation.Logical;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,11 +44,38 @@ public class PmsnController {
      * @author dingdongliang
      * @date 2018/4/18 16:08
      */
-    @RequiresPermissions(value = {"role:list", "pmsn:list"}, logical = Logical.OR)
+
     @GetMapping("/getAllPmsn")
     public ResponseData getAllPmsn() {
         List<SysPermission> sysPermissionList = sysPermissionService.selectAll();
         return ResponseData.success(sysPermissionList);
+    }
+
+    @GetMapping("/setPmsn")
+    public List<TreeModel> setPmsn() {
+        List<SysPermission> sysPermissionList = sysPermissionService.selectAll();
+        return pmsnToTree("0", sysPermissionList);
+    }
+
+    /**
+     * 递归转化成Tree模型，支持无限级节点
+     *
+     * @param id
+     * @param list
+     * @return
+     */
+    private List<TreeModel> pmsnToTree(String id, List<SysPermission> list) {
+        List<TreeModel> menuList = new ArrayList<>();
+        list.stream().filter(co -> id.equals(co.getPrntId())).forEach(co -> {
+            TreeModel menu = new TreeModel();
+            menu.setId(co.getPmsnId());
+            menu.setPid(StringUtils.isBlank(co.getPrntId()) ? "0" : co.getPrntId());
+
+            menu.setText(co.getMenuName());
+            menu.setNodes(pmsnToTree(co.getPmsnId(), list));
+            menuList.add(menu);
+        });
+        return menuList;
     }
 
     /**

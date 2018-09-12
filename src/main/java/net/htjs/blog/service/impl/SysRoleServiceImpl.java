@@ -1,5 +1,6 @@
 package net.htjs.blog.service.impl;
 
+import net.htjs.blog.constant.SystemConstant;
 import net.htjs.blog.dao.SysRoleMapper;
 import net.htjs.blog.dao.SysRolePmsnMapper;
 import net.htjs.blog.entity.BaseDomain;
@@ -8,14 +9,13 @@ import net.htjs.blog.entity.SysRolePmsn;
 import net.htjs.blog.service.SysRoleService;
 import net.htjs.blog.util.ShiroUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.htjs.blog.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * sharing/net.htjs.blog.service.impl
@@ -137,5 +137,70 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public void delete(String roleId) {
         sysRolePmsnMapper.deleteByRoleId(roleId);
         sysRoleMapper.deleteByPrimaryKey(roleId);
+    }
+
+    /**
+     * 保存选取的权限与角色映射
+     *
+     * @param roleId
+     * @param pmsnIds
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/12 19:58
+     */
+    @Override
+    public boolean savePermission(String roleId, String pmsnIds) {
+
+        //盛放没有修改以前的角色权限对应记录，用于在修改后删除多余的记录
+        Map<String, SysRolePmsn> map = new HashMap<>(8);
+
+        //获取某角色ID对应的所有权限
+        List<SysRolePmsn> rolePermissionList = sysRolePmsnMapper.selectByRoleId(roleId);
+        //循环处理这些权限与角色的对应记录，逐一放入map中，然后设置该记录为过期，用于标记删除
+        for (SysRolePmsn rolePmsn : rolePermissionList) {
+            String permissionId = rolePmsn.getPmsnId();
+            //对于角色权限对应记录来说，权限ID是互斥的，所以当成key处理
+            map.put(permissionId.toString(), rolePmsn);
+            //设置所有记录过期
+            updRolePermission(rolePmsn, SystemConstant.INVALID);
+        }
+        //开始处理修改后提交的对应数据，checkedIds为权限集合
+        if (null != pmsnIds && !"".equals(pmsnIds)) {
+            String[] ids = pmsnIds.split(",");
+            for (String id : ids) {
+                if (StringUtils.isBlank(id)) {
+                    continue;
+                }
+                //然后看这些权限ID是否在map中
+                SysRolePmsn rolePmsn = map.get(id);
+                if (rolePmsn != null) {
+                    //如果在map中，说明在数据库中有记录，把状态改成正常
+                    updRolePermission(rolePmsn, SystemConstant.EFFECTIVE);
+                } else {
+                    //如果不在msp中，说明该对应记录在数据库中没有，要新增
+                    rolePmsn = new SysRolePmsn();
+                    BaseDomain.createLog(rolePmsn);
+                    rolePmsn.setStatus(SystemConstant.EFFECTIVE);
+                    rolePmsn.setPmsnId(id);
+                    rolePmsn.setRoleId(roleId);
+                    rolePmsn.setRpId(StringUtil.getUUID());
+                    sysRolePmsnMapper.insert(rolePmsn);
+                }
+                //同时删除已经处理过的map值
+                map.remove(id);
+            }
+        }
+        //当所有值都处理完毕以后，剩下的map值就是：原来有对应关系，修改后没有对应关系，删除之
+        for (Map.Entry<String, SysRolePmsn> entry : map.entrySet()) {
+            baseMapper.deleteByPrimaryKey(entry.getValue().getRpId());
+        }
+
+        return true;
+    }
+
+    private void updRolePermission(SysRolePmsn rolePermission, String status) {
+        BaseDomain.updateLog(rolePermission);
+        rolePermission.setStatus(status);
+        sysRolePmsnMapper.updateByPrimaryKeySelective(rolePermission);
     }
 }

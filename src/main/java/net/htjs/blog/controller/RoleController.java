@@ -1,5 +1,6 @@
 package net.htjs.blog.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -18,6 +19,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * blog/net.htjs.blog.controller
@@ -34,8 +36,6 @@ public class RoleController {
 
     @Resource
     private SysRoleService sysRoleService;
-    @Resource
-    private SysPermissionService sysPermissionService;
 
     /**
      * 获取所有的角色列表，用于分页展示角色
@@ -118,6 +118,18 @@ public class RoleController {
         JsonUtil.hasAllRequired(requestJson, "roleId");
         String roleId = requestJson.getString("roleId");
         sysRoleService.delete(roleId);
+        return ResponseData.success();
+    }
+
+
+    /**
+     * 保存某个角色的权限分配
+     * param request
+     * return
+     */
+    @PostMapping("/savePermission")
+    public ResponseData savePermission(@RequestParam("roleId") String roleId, @RequestParam("pmsnIds") String pmsnIds) {
+        sysRoleService.savePermission(roleId, pmsnIds);
         return ResponseData.success();
     }
 }
