@@ -143,9 +143,7 @@ public class PageController {
     @GetMapping("/manage/article")
     public String article(Model model) {
         List<BlogArticle> blogArticleList = blogArticleService.selectAll();
-        for (BlogArticle blogArticle : blogArticleList) {
-            blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
-        }
+
         model.addAttribute("blogArticleList", blogArticleList);
         return "backend/articleList";
     }

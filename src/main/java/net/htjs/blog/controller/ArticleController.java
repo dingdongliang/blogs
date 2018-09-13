@@ -4,8 +4,10 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.entity.BaseDomain;
 import net.htjs.blog.entity.BlogArticle;
+import net.htjs.blog.entity.BlogSort;
 import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.BlogArticleService;
+import net.htjs.blog.service.BlogSortService;
 import net.htjs.blog.service.SysUserService;
 import net.htjs.blog.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,9 @@ public class ArticleController {
     private BlogArticleService blogArticleService;
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private BlogSortService blogSortService;
 
     @Value("${img.path}")
     private String folder;
@@ -99,6 +104,14 @@ public class ArticleController {
         return ResponseData.success();
     }
 
+    @PostMapping("/manage/sort")
+    @ResponseBody
+    public ResponseData addSort(@RequestParam("sortName") String sortName) {
+        BlogSort blogSort = new BlogSort(StringUtil.getUUID(), sortName);
+        blogSortService.insert(blogSort);
+        return ResponseData.success();
+    }
+
     /**
      * 可以改造成JSON格式返回值
      *
@@ -112,7 +125,6 @@ public class ArticleController {
                                           @RequestParam(value = "editormd-image-file", required = false) MultipartFile file) {
         Map<String, Object> resultMap = new HashMap<>(3);
         try {
-
 
             String fileName = file.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);

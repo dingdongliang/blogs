@@ -12,8 +12,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BlogSort extends BaseDomain{
+public class BlogSort extends BaseDomain {
     private String sortId;
 
     private String sortName;
+
+    public BlogSort(String sortId, String sortName) {
+        this.sortId = sortId;
+        this.sortName = sortName;
+    }
 }

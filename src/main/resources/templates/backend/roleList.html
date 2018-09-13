@@ -260,7 +260,7 @@
                         "roleName": $("#roleName").val(),
                         "roleCode": $("#roleCode").val(),
                         "isDefault": $("#isDefault").is(':checked') ? 'Y' : 'N',
-                        "roleId":$("#roleEditId").val()
+                        "roleId": $("#roleEditId").val()
                     },
                     type: "POST",
                     dataType: "json",
@@ -272,6 +272,7 @@
                             type: 'success',
                             timer: 10
                         });
+                        $("#roleEditId").val("");
                         $('#roleEdit').modal('hide');
                         window.location.reload();
                     }

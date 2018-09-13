@@ -26,10 +26,10 @@
 
     <select id="selectAll" resultMap="ResultMapWithBLOBs">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        from blog_article WHERE STATUS = 'E' order by created desc
+        a.article_id, a.article_title, c.user_name as creater, b.sort_name as sort_id, a.article_views, a.article_info,
+        a.created, a.modifyer,a.lastmod, a.status, a.article_summary
+        from blog_article a left join blog_sort b on a.sort_id=b.sort_id left join sys_user c on a.creater = c.user_id
+        WHERE a.STATUS = 'E' order by a.created desc
     </select>
 
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">

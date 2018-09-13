@@ -15,8 +15,8 @@
                     <a href="/manage/articleEdit" class="btn btn-primary btn-lg" role="button"
                        aria-disabled="false">新增文章</a>
 
-                    <a href="/manage/articleEdit" class="btn btn-primary btn-lg" role="button"
-                       aria-disabled="false">新增分类</a>
+                    <a href="javascript:void(0)" class="btn btn-primary btn-lg" role="button"
+                       aria-disabled="false" data-toggle="modal" data-target="#sortEdit">新增分类</a>
                 </div>
                 <div class="card-body">
 
@@ -73,6 +73,31 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="sortEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">添加分类</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-caps-small"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="sortName" placeholder="请输入文章分类">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="submit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <th:block layout:fragment="bodyAssets">
     <script>
@@ -96,6 +121,28 @@
             //Like record
             table.on('click', '.like', function () {
                 alert('审批通过');
+            });
+
+            $("#submit").click(function () {
+                $.ajax({
+                    url: "/manage/sort",
+                    data: {
+                        "sortName": $("#sortName").val()
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                        $('#sortEdit').modal('hide');
+                        window.location.reload();
+                    }
+                });
             });
         });
     </script>
