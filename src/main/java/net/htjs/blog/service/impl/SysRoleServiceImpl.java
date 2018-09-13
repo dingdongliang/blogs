@@ -1,6 +1,7 @@
 package net.htjs.blog.service.impl;
 
 import net.htjs.blog.constant.SystemConstant;
+import net.htjs.blog.dao.SysPermissionMapper;
 import net.htjs.blog.dao.SysRoleMapper;
 import net.htjs.blog.dao.SysRolePmsnMapper;
 import net.htjs.blog.entity.BaseDomain;
@@ -31,6 +32,8 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     @Resource
     private SysRoleMapper sysRoleMapper;
     @Resource
+    private SysPermissionMapper sysPermissionMapper;
+    @Resource
     private SysRolePmsnMapper sysRolePmsnMapper;
 
     @Override
@@ -38,20 +41,6 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         return sysRoleMapper.selectDefault();
     }
 
-    /**
-     * 给角色赋予权限，一对多
-     *
-     * @param roleId  角色ID
-     * @param pmsnIds 权限ID数组
-     * @return void
-     * @author dingdongliang
-     * @date 2018/4/24 8:33
-     */
-    @Override
-    public void putPmsnToRole(String roleId, String[] pmsnIds) {
-        String userId = ShiroUtil.getUserId();
-        sysRolePmsnMapper.insertMany(roleId, Arrays.asList(pmsnIds), userId);
-    }
 
     /**
      * 更新用户的角色
@@ -113,9 +102,9 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
      * @date 2018/4/24 11:13
      */
     @Override
-    public void insert(SysRole sysRole, String[] pmsnIds) {
+    public void insert(SysRole sysRole, String pmsnIds) {
         sysRoleMapper.insert(sysRole);
-        putPmsnToRole(sysRole.getRoleId(), pmsnIds);
+        savePermission(sysRole.getRoleId(), pmsnIds);
     }
 
     /**
@@ -160,7 +149,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         for (SysRolePmsn rolePmsn : rolePermissionList) {
             String permissionId = rolePmsn.getPmsnId();
             //对于角色权限对应记录来说，权限ID是互斥的，所以当成key处理
-            map.put(permissionId.toString(), rolePmsn);
+            map.put(permissionId, rolePmsn);
             //设置所有记录过期
             updRolePermission(rolePmsn, SystemConstant.INVALID);
         }
@@ -202,5 +191,32 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         BaseDomain.updateLog(rolePermission);
         rolePermission.setStatus(status);
         sysRolePmsnMapper.updateByPrimaryKeySelective(rolePermission);
+    }
+
+    /**
+     * 持久化角色信息
+     *
+     * @param sysRole
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/13 9:28
+     */
+    @Override
+    public boolean persistenceRole(SysRole sysRole) {
+        if (StringUtils.isBlank(sysRole.getRoleId())) {
+
+            sysRole.setRoleId(StringUtil.getUUID());
+            BaseDomain.createLog(sysRole);
+
+            //查询默认权限
+            List<String> sysPmsnList = sysPermissionMapper.selectDefault();
+
+            insert(sysRole, StringUtils.join(sysPmsnList, ","));
+
+        } else {
+            BaseDomain.updateLog(sysRole);
+            updateByPrimaryKeySelective(sysRole);
+        }
+        return true;
     }
 }

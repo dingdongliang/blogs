@@ -13,5 +13,12 @@ import java.util.List;
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
+    /**
+     * 获取默认的角色ID
+     * @param
+     * @return java.util.List<java.lang.String>
+     * @author dingdongliang
+     * @date 2018/9/13 9:46
+     */
     List<String> selectDefault();
 }

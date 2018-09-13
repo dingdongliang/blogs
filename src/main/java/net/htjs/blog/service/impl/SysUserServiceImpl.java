@@ -227,7 +227,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
             sysUser.setUserId(StringUtil.getUUID());
             BaseDomain.createLog(sysUser);
 
-            //查询默认权限
+            //查询默认角色
             List<String> sysRoleList = sysRoleMapper.selectDefault();
 
             insert(sysUser, StringUtils.join(sysRoleList, ","));

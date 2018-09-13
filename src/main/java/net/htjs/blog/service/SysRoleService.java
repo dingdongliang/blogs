@@ -1,6 +1,7 @@
 package net.htjs.blog.service;
 
 import net.htjs.blog.entity.SysRole;
+import net.htjs.blog.entity.SysUser;
 
 import java.util.List;
 
@@ -13,16 +14,7 @@ import java.util.List;
  */
 public interface SysRoleService extends BaseService<SysRole> {
 
-    /**
-     * 给角色赋予权限，一对多
-     *
-     * @param roleId  角色ID
-     * @param pmsnIds 权限ID数组
-     * @return void
-     * @author dingdongliang
-     * @date 2018/4/24 8:33
-     */
-    void putPmsnToRole(String roleId, String[] pmsnIds);
+
 
     /**
      * 更新用户的角色
@@ -39,12 +31,12 @@ public interface SysRoleService extends BaseService<SysRole> {
      * 新增角色，同时分配权限
      *
      * @param sysRole 角色对象
-     * @param pmsnIds 权限集合
+     * @param pmsnIds 权限集合字符串
      * @return void
      * @author dingdongliang
      * @date 2018/4/24 11:13
      */
-    void insert(SysRole sysRole, String[] pmsnIds);
+    void insert(SysRole sysRole, String pmsnIds);
 
     /**
      * 修改角色，同时修改角色-权限映射
@@ -80,13 +72,24 @@ public interface SysRoleService extends BaseService<SysRole> {
 
     /**
      * 保存分配角色权限
-     * @param roleId 角色id
+     *
+     * @param roleId  角色id
      * @param pmsnIds 菜单权限ID集合
      * @return boolean
      * @author dingdongliang
      * @date 2018/9/12 19:57
      */
     boolean savePermission(String roleId, String pmsnIds);
+
+    /**
+     * 持久化角色信息
+     *
+     * @param sysRole
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/13 9:28
+     */
+    boolean persistenceRole(SysRole sysRole);
 }
 
 

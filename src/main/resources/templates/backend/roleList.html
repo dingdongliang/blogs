@@ -173,8 +173,28 @@
             // Delete a record
             table.on('click', '.remove', function (e) {
                 $tr = $(this).closest('tr');
-                table.row($tr).remove().draw();
-                e.preventDefault();
+                var data = table.row($tr).data();
+
+                $.ajax({
+                    url: "/role/deleteRole",
+                    data: {
+                        "roleId": data[0]
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function () {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                        table.row($tr).remove().draw();
+                        e.preventDefault();
+                        window.location.reload();
+                    }
+                });
             });
 
             //Like record
@@ -235,11 +255,12 @@
 
             $("#submit").click(function () {
                 $.ajax({
-                    url: "/role/addRole",
+                    url: "/role/saveOrUpdateRole",
                     data: {
                         "roleName": $("#roleName").val(),
                         "roleCode": $("#roleCode").val(),
-                        "isDefault": $("#isDefault").is(':checked') ? 'Y' : 'N'
+                        "isDefault": $("#isDefault").is(':checked') ? 'Y' : 'N',
+                        "roleId":$("#roleEditId").val()
                     },
                     type: "POST",
                     dataType: "json",

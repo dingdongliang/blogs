@@ -99,7 +99,7 @@ public class PageController {
     }
 
     /**
-     * 后台角色管理界面
+     * 后台角色管理界面，或者在页面加载的时候，调用获取角色分页接口实现
      *
      * @param
      * @return java.lang.String

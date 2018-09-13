@@ -40,4 +40,14 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @date 2018/4/18 15:44
      */
     List<SysPermission> getUserMenu(String userId);
+
+
+    /**
+     * 查询默认的权限菜单ID
+     * @param
+     * @return java.util.List<java.lang.String>
+     * @author dingdongliang
+     * @date 2018/9/13 9:41
+     */
+    List<String> selectDefault();
 }

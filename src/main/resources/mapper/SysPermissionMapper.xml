@@ -250,4 +250,10 @@
         (select pmsn_id from sys_role_pmsn where role_id in
         (select role_id from sys_user_role where user_id = #{userId,jdbcType=VARCHAR}))
     </select>
+
+    <select id="selectDefault" resultType="java.lang.String">
+        select
+        PMSN_ID
+        from sys_permission WHERE STATUS = 'E' and REQUIRED='Y'
+    </select>
 </mapper>
