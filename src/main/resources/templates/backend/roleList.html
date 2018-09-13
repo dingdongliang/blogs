@@ -163,11 +163,10 @@
                 $("#roleName").val(data[1]);
                 $("#roleCode").val(data[2]);
 
-                //TODO 这里的Y-N-Y有错误
-                if ('Y' === data[4]) {
-                    $("#isDefault").attr('checked', true);
+                if ("Y" === data[4]) {
+                    $("#isDefault").prop("checked", true);
                 } else {
-                    $("#isDefault").attr('checked', false);
+                    $("#isDefault").prop("checked", false);
                 }
             });
 
