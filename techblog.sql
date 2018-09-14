@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2018-08-31 18:37:16
+Date: 2018-09-14 18:45:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `blog_article` (
   `created` datetime DEFAULT NULL COMMENT '提交时间',
   `modifyer` varchar(32) DEFAULT NULL COMMENT '修改人',
   `lastmod` datetime DEFAULT NULL COMMENT '修改时间',
-  `status` char(1) NOT NULL DEFAULT 'E' COMMENT '当前状态,E:审批通过,W:等待审批,I:下架',
+  `status` char(1) NOT NULL DEFAULT 'W' COMMENT '当前状态,E:审批通过,W:等待审批,I:下架',
   `article_summary` varchar(255) DEFAULT NULL COMMENT '摘要',
   PRIMARY KEY (`article_id`),
   KEY `FK_article_user` (`creater`),
@@ -103,9 +103,7 @@ CREATE TABLE `sys_role_pmsn` (
   `MODIFYER` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`RP_ID`),
   KEY `FK_RP_ROLE` (`ROLE_ID`),
-  KEY `FK_RP_PMSN` (`PMSN_ID`),
-  CONSTRAINT `sys_role_pmsn_ibfk_1` FOREIGN KEY (`PMSN_ID`) REFERENCES `sys_permission` (`PMSN_ID`),
-  CONSTRAINT `sys_role_pmsn_ibfk_2` FOREIGN KEY (`ROLE_ID`) REFERENCES `sys_role` (`ROLE_ID`)
+  KEY `FK_RP_PMSN` (`PMSN_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限角色表';
 
 -- ----------------------------
@@ -141,7 +139,5 @@ CREATE TABLE `sys_user_role` (
   `MODIFYER` varchar(32) DEFAULT NULL COMMENT '修改人',
   PRIMARY KEY (`UR_ID`),
   KEY `FK_UR_ROLE` (`ROLE_ID`),
-  KEY `FK_UR_USER` (`USER_ID`),
-  CONSTRAINT `sys_user_role_ibfk_1` FOREIGN KEY (`ROLE_ID`) REFERENCES `sys_role` (`ROLE_ID`),
-  CONSTRAINT `sys_user_role_ibfk_2` FOREIGN KEY (`USER_ID`) REFERENCES `sys_user` (`user_id`)
+  KEY `FK_UR_USER` (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色表';
