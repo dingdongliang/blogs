@@ -14,7 +14,7 @@
             <div class="card">
                 <div class="card-header">
                     <a href="javascript:void(0)" class="btn btn-primary btn-lg" role="button"
-                       aria-disabled="false" data-toggle="modal" data-target="#pmsnEdit">新增权限菜单</a>
+                       aria-disabled="false" data-toggle="modal" data-target="#pmsnEdit">新增根菜单</a>
                 </div>
                 <div class="card-body">
                     <table id="table" class="text-md-center"></table>
@@ -31,15 +31,59 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title" id="exampleModalLabel">权限菜单编辑</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">根菜单编辑</h5>
                 </div>
                 <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-caps-small"></i></span>
+                        </div>
+                        <input type="hidden" id="pmsnEditId">
+                        <input type="text" class="form-control" id="menuName" placeholder="这里输入权限名称">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-lock-circle-open"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="menuCode" placeholder="这里输入菜单代码，比如：user">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-key-25"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="pmsnCode" placeholder="这里输入权限代码，比如：user:add">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-bank"></i></span>
+                        </div>
+                        <input type="hidden" id="prntId">
+                        <input type="hidden" id="prntName">
+                        <input type="hidden" id="pmsnType">
+                        <input type="text" class="form-control" id="pmsnUrl" placeholder="这里输入权限对应地址">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend"><span class="input-group-text">
+                            <i class="nc-icon nc-paper"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="pmsnDesc" placeholder="这里输入权限描述">
+                    </div>
+                    <div class="form-group">
+                        <select id="pmsnIcon" class="form-control">
+                            <option value="nc-single-02" selected>nc-single-02</option>
+                            <option value="nc-hat-3">nc-hat-3</option>
+                            <option value="nc-zoom-split">nc-zoom-split</option>
+                            <option value="nc-touch-id">nc-touch-id</option>
+                            <option value="nc-paper">nc-paper</option>
+                            <option value="nc-badge">nc-badge</option>
+                        </select>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <div class="form-check-radio form-check-inline">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="radio" name="pmsnType" id="pmsnTypeMenu"
-                                           value="menu" checked="">
+                                           value="menu" checked>
                                     菜单
                                     <span class="form-check-sign"></span>
                                 </label>
@@ -64,52 +108,6 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-caps-small"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="menuName" placeholder="这里输入权限名称">
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-lock-circle-open"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="menuCode" placeholder="这里输入菜单代码，比如：user">
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-key-25"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="pmsnCode" placeholder="这里输入权限代码，比如：user:add">
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-minimal-right"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="prntName" placeholder="这里选择父级节点">
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-bank"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="pmsnUrl" placeholder="这里输入权限对应地址">
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text">
-                            <i class="nc-icon nc-paper"></i></span>
-                        </div>
-                        <input type="text" class="form-control" id="pmsnDesc" placeholder="这里输入权限描述">
-                    </div>
-                    <div class="form-group">
-                        <select id="pmsnIcon" class="form-control">
-                            <option selected>选择权限ICON</option>
-                            <option value="nc-trophy"><span class="input-group-text"><i class="nc nc-trophy"></i></span>nc-trophy</option>
-                            <option value="nc-tv-2">nc-tv-2</option>
-                            <option value="nc-zoom-split">nc-zoom-split</option>
-                            <option value="nc-tap-01">nc-tap-01</option>
-                            <option value="nc-pin-3">nc-pin-3</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -181,11 +179,19 @@
 
             $("#submit").click(function () {
                 $.ajax({
-                    url: "/user/saveOrUpdateUser",
+                    url: "/pmsn/saveOrUpdatePmsn",
                     data: {
-                        "userName": $("#userName").val(),
-                        "account": $("#account").val(),
-                        "phone": $("#phone").val()
+                        "pmsnId": $("#pmsnEditId").val(),
+                        "menuName": $("#menuName").val(),
+                        "menuCode": $("#menuCode").val(),
+                        "pmsnCode": $("#pmsnCode").val(),
+                        "prntId": $("#prntId").val(),
+                        "prntName": $("#prntName").val(),
+                        "pmsnUrl": $("#pmsnUrl").val(),
+                        "pmsnDesc": $("#pmsnDesc").val(),
+                        "pmsnIcon": $("#pmsnIcon").val(),
+                        "required": $("#required").is(':checked') ? 'Y' : 'N',
+                        "pmsnType": $("input[name='pmsnType']:checked").val()
                     },
                     type: "POST",
                     dataType: "json",
@@ -197,6 +203,10 @@
                             type: 'success',
                             timer: 10
                         });
+                        $('#pmsnEdit').modal('hide');
+                        $('.input').val("");
+                        $("#required").prop("checked", false);
+                        window.location.reload();
                     }
                 });
             });
@@ -207,21 +217,56 @@
          */
         function AddFunctionAlty(value, row, index) {
             return [
-                '<button id="TableEditor" class="btn-info btn-link edit" data-toggle="modal" data-target="#pmsnEdit">修改</button>&nbsp;&nbsp;',
-                '<button id="TableSon" class="btn-primary btn-link like" data-toggle="modal" data-target="#pmsnEdit">添加子节点</button>&nbsp;&nbsp;',
+                '<button id="TableEditor" class="btn-info btn-link edit">修改</button>&nbsp;&nbsp;',
+                '<button id="TableSon" class="btn-primary btn-link like" data-toggle="modal" data-target="#pmsnEdit">添加下级</button>&nbsp;&nbsp;',
                 '<button id="TableDelete" class="btn-danger btn-link remove">禁用</button>'
             ].join("");
         }
 
         window.operateEvents = {
             "click #TableEditor": function (e, value, row, index) {
-                //编辑按钮事件，主要是给模态框赋值，需要编辑的各项文本
+                $('#pmsnEdit').modal('show');
+                $("#pmsnEditId").val(row.pmsnId);
+                $("#menuName").val(row.menuName);
+                $("#menuCode").val(row.menuCode);
+                $("#pmsnCode").val(row.pmsnCode);
+                $("#pmsnUrl").val(row.pmsnUrl);
+                $("#pmsnDesc").val(row.pmsnDesc);
+                $("#pmsnIcon").val(row.pmsnIcon);
+
+                if ("Y" === row.required) {
+                    $("#required").prop("checked", true);
+                } else {
+                    $("#required").prop("checked", false);
+                }
             },
-            "click #TableSon": function () {
-                //编辑按钮事件，主要是给模态框赋值，父类ID
+            "click #TableSon": function (e, value, row, index) {
+                //TODO Tabletreeview结构有问题，不可用，需要修改
+                $('#pmsnEdit').modal('show');
+                $("#prntId").val(row.pmsnId);
+                $("#prntName").val(row.menuName);
             },
-            "click #TableDelete": function () {
-                $(this).parent().parent().remove();
+            "click #TableDelete": function (e, value, row, index) {
+                $.ajax({
+                    url: "/pmsn/deletePmsn",
+                    data: {
+                        "pmsnId": row.pmsnId
+                    },
+                    type: "POST",
+                    dataType: "json",
+                    success: function () {
+                        $.notify({
+                            icon: 'ti-gift',
+                            message: "提交成功"
+                        }, {
+                            type: 'success',
+                            timer: 10
+                        });
+                        $(this).parent().parent().remove();
+                        e.preventDefault();
+                        window.location.reload();
+                    }
+                });
             }
         }
     </script>

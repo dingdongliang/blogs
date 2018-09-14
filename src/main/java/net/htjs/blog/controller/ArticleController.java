@@ -8,8 +8,8 @@ import net.htjs.blog.entity.BlogSort;
 import net.htjs.blog.exception.ResponseData;
 import net.htjs.blog.service.BlogArticleService;
 import net.htjs.blog.service.BlogSortService;
-import net.htjs.blog.service.SysUserService;
 import net.htjs.blog.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +38,6 @@ public class ArticleController {
     @Resource
     private BlogArticleService blogArticleService;
     @Resource
-    private SysUserService sysUserService;
-
-    @Resource
     private BlogSortService blogSortService;
 
     @Value("${img.path}")
@@ -57,9 +54,6 @@ public class ArticleController {
     @GetMapping("/")
     public String index(Model model) {
         List<BlogArticle> blogArticleList = blogArticleService.selectAll();
-        for (BlogArticle blogArticle : blogArticleList) {
-            blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
-        }
         model.addAttribute("blogArticleList", blogArticleList);
         return "front/index";
     }
@@ -77,7 +71,6 @@ public class ArticleController {
     @GetMapping("/detail/{articleId}")
     public String detail(@PathVariable String articleId, Model model) {
         BlogArticle blogArticle = blogArticleService.selectByPrimaryKey(articleId);
-        blogArticle.setCreater(sysUserService.selectByPrimaryKey(blogArticle.getCreater()).getUserName());
         model.addAttribute("blogArticle", blogArticle);
         return "front/detail";
     }
@@ -93,14 +86,7 @@ public class ArticleController {
     @PostMapping("/manage/articleSave")
     @ResponseBody
     public ResponseData articleSave(BlogArticle blogArticle) {
-
-        blogArticle.setArticleId(StringUtil.getUUID());
-
-        BaseDomain.createLog(blogArticle);
-
-        blogArticle.setArticleViews(1);
-
-        blogArticleService.insert(blogArticle);
+        blogArticleService.saveArticle(blogArticle);
         return ResponseData.success();
     }
 

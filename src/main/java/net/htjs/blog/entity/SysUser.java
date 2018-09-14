@@ -18,14 +18,27 @@ import java.util.Set;
 public class SysUser extends BaseDomain{
     private String userId;
 
+    /**
+     * 用户名称
+     */
     private String userName;
 
+    /**
+     * 登录帐号
+     */
     private String account;
 
+    /**
+     * 密码，默认6个1
+     */
     private String userPwd;
+
 
     private String phone;
 
+    /**
+     * 是否有效，E有效，I无效
+     */
     private String status = "E";
 
     private Set<String> menuList;

@@ -216,7 +216,7 @@
                         "userName": $("#userName").val(),
                         "account": $("#account").val(),
                         "phone": $("#phone").val(),
-                        "userId":$("#userEditId").val()
+                        "userId": $("#userEditId").val()
                     },
                     type: "POST",
                     dataType: "json",
@@ -228,7 +228,7 @@
                             type: 'success',
                             timer: 10
                         });
-                        $("#userEditId").val("");
+                        $('.input').val("");
                         $('#userEdit').modal('hide');
                         window.location.reload();
                     }

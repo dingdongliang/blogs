@@ -37,11 +37,11 @@ public interface SysPermissionService extends BaseService<SysPermission> {
      * 删除权限，需要同时删除角色-权限对应表中的该权限记录
      *
      * @param pmsnId 权限ID
-     * @return void
+     * @return boolean
      * @author dingdongliang
      * @date 2018/4/25 16:24
      */
-    void delete(String pmsnId);
+    boolean delete(String pmsnId);
 
     /**
      * 查询当前用户的菜单信息，不包含按钮
@@ -55,11 +55,22 @@ public interface SysPermissionService extends BaseService<SysPermission> {
 
     /**
      * 获取所有菜单信息，不包括按钮
+     *
      * @param
      * @return java.util.List<net.htjs.blog.entity.SysPermission>
      * @author dingdongliang
      * @date 2018/8/30 14:40
      */
     List<SysPermission> selectAllMenu();
+
+    /**
+     * 新建或者保存菜单权限
+     *
+     * @param sysPermission
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/14 16:21
+     */
+    boolean persistencePmsn(SysPermission sysPermission);
 }
 

@@ -15,6 +15,9 @@ import lombok.Setter;
 public class BlogSort extends BaseDomain {
     private String sortId;
 
+    /**
+     * 文章分类名称
+     */
     private String sortName;
 
     public BlogSort(String sortId, String sortName) {

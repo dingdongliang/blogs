@@ -18,5 +18,8 @@ public class SysRolePmsn extends BaseDomain {
 
     private String pmsnId;
 
+    /**
+     * 角色权限映射可用性，E为可用，I为不可用
+     */
     private String status = "E";
 }

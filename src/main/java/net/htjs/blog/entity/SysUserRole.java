@@ -2,6 +2,7 @@ package net.htjs.blog.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * blog/net.htjs.blog.entity
  *
@@ -18,6 +19,9 @@ public class SysUserRole extends BaseDomain {
 
     private String userId;
 
+    /**
+     * 是否有效，E有效，I无效
+     */
     private String status = "E";
 
 }

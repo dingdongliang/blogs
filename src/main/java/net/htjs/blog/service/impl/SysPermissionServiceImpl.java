@@ -4,9 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.constant.SystemConstant;
 import net.htjs.blog.dao.SysPermissionMapper;
 import net.htjs.blog.dao.SysRolePmsnMapper;
+import net.htjs.blog.entity.BaseDomain;
 import net.htjs.blog.entity.SysPermission;
 import net.htjs.blog.entity.SysUser;
 import net.htjs.blog.service.SysPermissionService;
+import net.htjs.blog.util.ShiroUtil;
+import net.htjs.blog.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Service;
@@ -75,9 +79,18 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
      * @date 2018/4/25 16:24
      */
     @Override
-    public void delete(String pmsnId) {
-        sysRolePmsnMapper.deleteByPmsnId(pmsnId);
-        sysPermissionMapper.deleteByPrimaryKey(pmsnId);
+    public boolean delete(String pmsnId) {
+
+
+        //如果包含有子菜单，则不能删除
+        List<SysPermission> pList = sysPermissionMapper.findByPid(pmsnId);
+
+        if (pList.size() > 0) {
+            return false;
+        } else {
+            sysRolePmsnMapper.deleteByPmsnId(pmsnId);
+            return sysPermissionMapper.deleteByPrimaryKey(pmsnId) > 0;
+        }
     }
 
     @Override
@@ -88,5 +101,30 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
     @Override
     public List<SysPermission> selectAllMenu() {
         return sysPermissionMapper.selectAllMenu();
+    }
+
+    /**
+     * 新建或者保存菜单权限
+     *
+     * @param sysPermission
+     * @return boolean
+     * @author dingdongliang
+     * @date 2018/9/14 16:21
+     */
+    @Override
+    public boolean persistencePmsn(SysPermission sysPermission) {
+
+        if (StringUtils.isBlank(sysPermission.getPmsnId())) {
+            sysPermission.setPmsnId(StringUtil.getUUID());
+            BaseDomain.createLog(sysPermission);
+            if (StringUtils.isBlank(sysPermission.getPrntId())) {
+                sysPermission.setPrntId("0");
+            }
+            sysPermissionMapper.insert(sysPermission);
+        } else {
+            BaseDomain.updateLog(sysPermission);
+            sysPermissionMapper.updateByPrimaryKeySelective(sysPermission);
+        }
+        return true;
     }
 }

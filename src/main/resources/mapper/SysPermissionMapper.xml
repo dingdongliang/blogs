@@ -2,22 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="net.htjs.blog.dao.SysPermissionMapper">
     <resultMap id="BaseResultMap" type="net.htjs.blog.entity.SysPermission">
-        <id column="PMSN_ID" property="pmsnId" jdbcType="VARCHAR" />
-        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
-        <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR" />
-        <result column="PRNT_ID" property="prntId" jdbcType="VARCHAR" />
-        <result column="PRNT_NAME" property="prntName" jdbcType="VARCHAR" />
-        <result column="PMSN_CODE" property="pmsnCode" jdbcType="VARCHAR" />
-        <result column="PMSN_ICON" property="pmsnIcon" jdbcType="VARCHAR" />
-        <result column="PMSN_TYPE" property="pmsnType" jdbcType="VARCHAR" />
-        <result column="STATUS" property="status" jdbcType="CHAR" />
-        <result column="PMSN_URL" property="pmsnUrl" jdbcType="VARCHAR" />
-        <result column="PMSN_DESC" property="pmsnDesc" jdbcType="VARCHAR" />
-        <result column="REQUIRED" property="required" jdbcType="CHAR" />
-        <result column="CREATED" property="created" jdbcType="TIMESTAMP" />
-        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP" />
-        <result column="CREATER" property="creater" jdbcType="VARCHAR" />
-        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR" />
+        <id column="PMSN_ID" property="pmsnId" jdbcType="VARCHAR"/>
+        <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR"/>
+        <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR"/>
+        <result column="PRNT_ID" property="prntId" jdbcType="VARCHAR"/>
+        <result column="PRNT_NAME" property="prntName" jdbcType="VARCHAR"/>
+        <result column="PMSN_CODE" property="pmsnCode" jdbcType="VARCHAR"/>
+        <result column="PMSN_ICON" property="pmsnIcon" jdbcType="VARCHAR"/>
+        <result column="PMSN_TYPE" property="pmsnType" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="CHAR"/>
+        <result column="PMSN_URL" property="pmsnUrl" jdbcType="VARCHAR"/>
+        <result column="PMSN_DESC" property="pmsnDesc" jdbcType="VARCHAR"/>
+        <result column="REQUIRED" property="required" jdbcType="CHAR"/>
+        <result column="CREATED" property="created" jdbcType="TIMESTAMP"/>
+        <result column="LASTMOD" property="lastmod" jdbcType="TIMESTAMP"/>
+        <result column="CREATER" property="creater" jdbcType="VARCHAR"/>
+        <result column="MODIFYER" property="modifyer" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -27,14 +27,14 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_permission
         where PMSN_ID = #{pmsnId,jdbcType=VARCHAR} and STATUS = 'E'
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_permission WHERE STATUS = 'E'
     </select>
 
@@ -237,7 +237,7 @@
 
     <select id="getUserPmsn" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from sys_permission where STATUS = 'E' and pmsn_id in
         (select pmsn_id from sys_role_pmsn where role_id in
         (select role_id from sys_user_role where user_id = #{userId,jdbcType=VARCHAR}))
@@ -255,5 +255,12 @@
         select
         PMSN_ID
         from sys_permission WHERE STATUS = 'E' and REQUIRED='Y'
+    </select>
+
+    <select id="findByPid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_permission
+        WHERE STATUS='E' AND PRNT_ID = #{prntId,jdbcType=VARCHAR}
     </select>
 </mapper>

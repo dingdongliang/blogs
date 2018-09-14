@@ -79,93 +79,18 @@ public class PmsnController {
     }
 
     /**
-     * 新增权限
+     * 新增或修改权限,//TODO 如果是通用权限，还需要添加所有的角色权限映射
      *
      * @return net.htjs.blog.exception.ResponseData
      * @author dingdongliang
      * @date 2018/4/18 16:09
      */
-    @RequiresPermissions("pmsn:add")
-    @PostMapping("/addPmsn")
-    public ResponseData addPmsn(@ApiParam(name = "requestJson", value = "格式为{\"menuName\":\"菜单管理\"," +
-            "\"menuCode\":\"pmsn\",\"pmsnCode\":\"pmsn:list\",\"pmsnName\":\"列表\",\"pmsnType\":\"menu\"," +
-            "\"status\":\"E\"}", required = true) @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "menuName,menuCode,pmsnCode,pmsnName,pmsnType,status");
-
-        String menuName = requestJson.getString("menuName");
-        String menuCode = requestJson.getString("menuCode");
-        String pmsnCode = requestJson.getString("pmsnCode");
-        String pmsnType = requestJson.getString("pmsnType");
-        String status = requestJson.getString("status");
-
-        SysPermission sysPermission = new SysPermission();
-        String pmsnId = StringUtil.getUUID();
-        sysPermission.setPmsnId(pmsnId);
-        sysPermission.setMenuCode(menuCode);
-        sysPermission.setMenuName(menuName);
-        sysPermission.setPmsnCode(pmsnCode);
-        sysPermission.setPmsnType(pmsnType);
-        sysPermission.setStatus(status);
-        BaseDomain.createLog(sysPermission);
-
-        sysPermissionService.insert(sysPermission);
-
+    @PostMapping("/saveOrUpdatePmsn")
+    public ResponseData saveOrUpdatePmsn(SysPermission sysPermission) {
+        sysPermissionService.persistencePmsn(sysPermission);
         return ResponseData.success();
     }
 
-    /**
-     * 修改权限
-     *
-     * @return net.htjs.blog.exception.ResponseData
-     * @author dingdongliang
-     * @date 2018/4/18 16:09
-     */
-    @RequiresPermissions("pmsn:update")
-    @PostMapping("/updatePmsn")
-    public ResponseData updatePmsn(@ApiParam(name = "requestJson", value = "格式为{\"menuName\":\"菜单管理\"," +
-            "\"menuCode\":\"pmsn\",\"pmsnCode\":\"pmsn:list\",\"pmsnName\":\"列表\",\"pmsnType\":\"menu\"," +
-            "\"status\":\"E\",\"pmsnId\":\"c4517de81fac423bb782baa4e48d311b\"}", required = true)
-                                   @RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "pmsnId");
-
-        String pmsnId = requestJson.getString("pmsnId");
-        String menuName = requestJson.getString("menuName");
-        String menuCode = requestJson.getString("menuCode");
-        String pmsnCode = requestJson.getString("pmsnCode");
-        String pmsnName = requestJson.getString("pmsnName");
-        String pmsnType = requestJson.getString("pmsnType");
-        String status = requestJson.getString("status");
-
-        SysPermission sysPermission = sysPermissionService.selectByPrimaryKey(pmsnId);
-
-        //判断是否为空，然后进行更新或者直接返回
-        if (sysPermission != null) {
-
-            if (menuCode != null) {
-                sysPermission.setMenuCode(menuCode);
-            }
-            if (menuName != null) {
-                sysPermission.setMenuName(menuName);
-            }
-            if (pmsnCode != null) {
-                sysPermission.setPmsnCode(pmsnCode);
-            }
-            if (pmsnType != null) {
-                sysPermission.setPmsnType(pmsnType);
-            }
-            if (status != null) {
-                sysPermission.setStatus(status);
-            }
-
-            BaseDomain.updateLog(sysPermission);
-
-            sysPermissionService.updateByPrimaryKey(sysPermission);
-
-            return ResponseData.success();
-        } else {
-            return ResponseData.error();
-        }
-    }
 
     /**
      * 删除权限，需要同时删除角色-权限对应表中的该权限记录
@@ -174,14 +99,10 @@ public class PmsnController {
      * @author dingdongliang
      * @date 2018/4/18 16:09
      */
-    @RequiresPermissions("pmsn:delete")
-    @DeleteMapping("/deletePmsn")
-    public ResponseData deletePmsn(@RequestBody JSONObject requestJson) throws GlobalException {
-        JsonUtil.hasAllRequired(requestJson, "pmsnId");
-        String pmsnId = requestJson.getString("pmsnId");
+    @PostMapping("/deletePmsn")
+    public ResponseData deletePmsn(@RequestParam("pmsnId") String pmsnId) {
         sysPermissionService.delete(pmsnId);
         return ResponseData.success();
     }
-
 }
 

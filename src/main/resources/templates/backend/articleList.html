@@ -55,12 +55,11 @@
                                             <td th:text="${blogArticle.creater}"></td>
                                             <td th:text="${blogArticle.created}"></td>
                                             <td>
-                                                <a th:href="@{'/detail/'+${blogArticle.articleId}}"
+                                                <a th:href="@{'/manage/articleEdit/'+${blogArticle.articleId}}"
                                                    class="btn-info btn-link like">修改</a>
                                                 <a th:href="@{'/detail/'+${blogArticle.articleId}}"
                                                    class="btn-primary btn-link edit">审批</a>
-                                                <a th:href="@{'/detail/'+${blogArticle.articleId}}"
-                                                   class="btn-danger btn-link remove">下架</a>
+                                                <a href="javascript:void(0)" class="btn-danger btn-link remove">下架</a>
                                             </td>
                                         </tr>
                                     </div>
@@ -120,7 +119,7 @@
 
             //Like record
             table.on('click', '.like', function () {
-                alert('审批通过');
+
             });
 
             $("#submit").click(function () {

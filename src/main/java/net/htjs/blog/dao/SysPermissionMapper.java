@@ -44,10 +44,21 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
 
     /**
      * 查询默认的权限菜单ID
+     *
      * @param
      * @return java.util.List<java.lang.String>
      * @author dingdongliang
      * @date 2018/9/13 9:41
      */
     List<String> selectDefault();
+
+    /**
+     * 查询某个父菜单的子项
+     *
+     * @param pid
+     * @return java.util.List<net.htjs.blog.entity.SysPermission>
+     * @author dingdongliang
+     * @date 2018/9/14 18:16
+     */
+    List<SysPermission> findByPid(String pid);
 }

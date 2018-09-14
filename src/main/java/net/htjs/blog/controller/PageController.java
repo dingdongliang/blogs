@@ -1,20 +1,18 @@
 package net.htjs.blog.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import net.htjs.blog.entity.BlogArticle;
-import net.htjs.blog.entity.SysPermission;
-import net.htjs.blog.entity.SysRole;
-import net.htjs.blog.entity.SysUser;
-import net.htjs.blog.service.BlogArticleService;
-import net.htjs.blog.service.SysPermissionService;
-import net.htjs.blog.service.SysRoleService;
-import net.htjs.blog.service.SysUserService;
+import net.htjs.blog.entity.*;
+import net.htjs.blog.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -37,6 +35,8 @@ public class PageController {
     private BlogArticleService blogArticleService;
     @Resource
     private SysPermissionService sysPermissionService;
+    @Resource
+    private BlogSortService blogSortService;
 
     /**
      * 前台展示分类页面（按年份分组）
@@ -149,15 +149,23 @@ public class PageController {
     }
 
     /**
-     * 文章编辑跳转，TODO 新增和编辑
+     * 文章编辑跳转，注意mapping中value的写法和pathvariable的写法
      *
      * @param
      * @return java.lang.String
      * @author dingdongliang
      * @date 2018/8/30 14:42
      */
-    @GetMapping("/manage/articleEdit")
-    public String articleEdit() {
+    @GetMapping(value = {"/manage/articleEdit/{articleId}", "/manage/articleEdit"})
+    public String articleEdit(@PathVariable(required = false) String articleId, Model model) {
+        if (!StringUtils.isBlank(articleId)) {
+            BlogArticle blogArticle = blogArticleService.selectByPrimaryKey(articleId);
+            model.addAttribute("blogArticle", blogArticle);
+        }
+
+        List<BlogSort> blogSortList = blogSortService.selectAll();
+        model.addAttribute("blogSortList", blogSortList);
+
         return "backend/articleEdit";
     }
 }

@@ -9,24 +9,30 @@
 <div class="content" layout:fragment="content">
     <div class="row">
         <div class="form-group  col-md-9">
-            <input type="text" class="form-control" id="articleTitle" placeholder="这里输入文章标题">
+            <input type="text" class="form-control" id="articleTitle" placeholder="这里输入文章标题"
+                   th:attr="value=${blogArticle?.articleTitle}">
         </div>
         <div class="form-group  col-md-3">
             <select class="form-control" id="sortId">
-                <option value="JAVA">JAVA</option>
-                <option value="大数据">大数据</option>
-                <option value="IT自动化">IT自动化</option>
+                <option th:if="${blogArticle?.sortId}==${blogSort?.sortId}" selected="true"
+                        th:each="blogSort:${blogSortList}" th:text="${blogSort.sortName}"
+                        th:attr="value=${blogSort.sortId}"></option>
+                <option th:else th:each="blogSort:${blogSortList}" th:text="${blogSort.sortName}"
+                        th:attr="value=${blogSort.sortId}"></option>
             </select>
         </div>
     </div>
     <div class="row">
         <div class="form-group  col-md-12">
-            <input type="text" class="form-control" id="articleSummary" placeholder="这里输入文章概要">
+            <input type="hidden" id="articleId" th:attr="value=${blogArticle?.articleId}">
+            <input type="text" class="form-control" id="articleSummary" placeholder="这里输入文章概要"
+                   th:attr="value=${blogArticle?.articleSummary}">
         </div>
     </div>
     <div class="row">
         <div class="editormd" id="blog-editormd">
-            <textarea class="editormd-markdown-textarea" name="test-editormd-markdown-doc"></textarea>
+            <textarea class="editormd-markdown-textarea" name="textContent" th:text="${blogArticle?.articleInfo}">
+            </textarea>
             <!-- 第二个隐藏文本域，用来构造生成的HTML代码，方便表单POST提交，这里的name可以任意取，后台接受时以这个name键为准 -->
             <textarea class="editormd-html-textarea" name="text" id="articleInfo"></textarea>
         </div>
@@ -43,6 +49,7 @@
     <script type="text/javascript">
         $(function () {
             editormd("blog-editormd", {
+                htmlDecode: "style,script,iframe",
                 width: "98%",
                 height: 450,
                 syncScrolling: "single",
@@ -61,7 +68,8 @@
                         "articleTitle": $("#articleTitle").val(),
                         "articleInfo": $("#articleInfo").val(),
                         "sortId": $("#sortId").val(),
-                        "articleSummary": $("#articleSummary").val()
+                        "articleSummary": $("#articleSummary").val(),
+                        "articleId":$("#articleId").val()
                     },
                     type: "POST",
                     dataType: "json",
