@@ -39,9 +39,10 @@
             </form>
         </div>
         <section class="post-list">
-            <div th:each="blogArticle:${blogArticleList}">
-                <article class="post post-with-tags">
-                    <header class="post-title"><a th:href="@{'/detail/'+${blogArticle.articleId}}" th:text="${blogArticle.articleTitle}"></a>
+            <div>
+                <article class="post post-with-tags" th:each="blogArticle:${blogArticleList}">
+                    <header class="post-title"><a th:href="@{'/detail/'+${blogArticle.articleId}}"
+                                                  th:text="${blogArticle.articleTitle}"></a>
                     </header>
                     <div class="post-meta"><span class="post-meta-author" th:text="${blogArticle.creater}"></span><span
                             class="post-meta-ctime" th:text="${blogArticle.created}"></span>

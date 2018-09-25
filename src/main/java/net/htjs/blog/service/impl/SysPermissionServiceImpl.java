@@ -117,9 +117,6 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission> imp
         if (StringUtils.isBlank(sysPermission.getPmsnId())) {
             sysPermission.setPmsnId(StringUtil.getUUID());
             BaseDomain.createLog(sysPermission);
-            if (StringUtils.isBlank(sysPermission.getPrntId())) {
-                sysPermission.setPrntId("0");
-            }
             sysPermissionMapper.insert(sysPermission);
         } else {
             BaseDomain.updateLog(sysPermission);

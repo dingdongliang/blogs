@@ -30,7 +30,7 @@ public class SysPermission extends BaseDomain {
     /**
      * 父级菜单Id
      */
-    private String prntId;
+    private String prntId = "";
 
     /**
      * 父级菜单名称

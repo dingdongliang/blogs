@@ -131,7 +131,7 @@
                 url: '/pmsn/getAllPmsn',
                 striped: true,
                 sidePagenation: 'server',
-                idField: 'id',
+                idField: 'pmsnId',
                 columns: [
                     {
                         field: 'ck',
@@ -161,8 +161,8 @@
                         formatter: AddFunctionAlty //表格中增加按钮
                     }
                 ],
-                treeShowField: 'name',
-                parentIdField: 'pid',
+                treeShowField: 'menuName',
+                parentIdField: 'prntId',
                 onLoadSuccess: function (data) {
                     $table.treegrid({
                         initialState: 'collapsed',//收缩
