@@ -35,7 +35,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from sys_permission WHERE STATUS = 'E'
+        from sys_permission WHERE STATUS = 'E' and PMSN_TYPE='menu'
     </select>
 
     <select id="selectAllMenu" resultMap="BaseResultMap">

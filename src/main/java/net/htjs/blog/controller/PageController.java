@@ -3,6 +3,7 @@ package net.htjs.blog.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.htjs.blog.entity.*;
 import net.htjs.blog.service.*;
+import net.htjs.blog.util.ShiroUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,7 +66,7 @@ public class PageController {
     }
 
     /**
-     * 后台管理大屏, TODO 临时获取所有菜单，需要修改成根据当前用户获取菜单
+     * 后台管理大屏
      *
      * @param
      * @return java.lang.String
@@ -74,7 +75,9 @@ public class PageController {
      */
     @GetMapping("/manage/main")
     public String main(HttpSession session) {
-        List<SysPermission> sysPermissionList = sysPermissionService.selectAllMenu();
+
+        List<SysPermission> sysPermissionList = sysPermissionService.getUserMenu(ShiroUtil.getUser().getUserId());
+
         session.setAttribute("sysPermissionList", sysPermissionList);
         return "backend/main";
     }

@@ -1,3 +1,5 @@
+public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALQ9FNMhbbc0waBHzxXDC9NUcMUU9W/uN+M6EkMIj8MFUrR7Soqt+qAMFEGaw/DEyUjrxtdZDPx063n6JhxoStECAwEAAQ==
+password: BXJrMo3QhxxG/wgZvZy/NbDpN3iaHkZxrox2ndLLLN6BvsjE/mbwn++wmwsP4NanwskjN874Q9VjASIZ+3K1uA==
 server:
   port: 8787
 logging:
@@ -5,3 +7,66 @@ logging:
     root: info
   pattern:
     console: "[%d{yyyy-MM-dd HH:mm:ss}] %-5level %logger{36} - %msg%n"
+
+img:
+  path: E:/upload/
+
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://10.3.50.190:3306/techblog?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: ${password}
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      validation-query-timeout: 3
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: mergeStat,wall,config,slf4j
+      connection-properties: config.decrypt=true;config.decrypt.key=${public-key};druid.stat.slowSqlMillis=5000
+
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        session-stat-max-count: 1000
+        profile-enable: true
+
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1
+        deny: 128.242.127.4
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+
+mybatis:
+  mapperLocations: classpath:/mapper/*.xml
+  type-aliases-package: net.htjs.blog.entity
+
+swagger:
+  enable: true
+
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  not-empty: true
